@@ -6,5 +6,4 @@ edition = "2024"
 [dependencies]
 aya-ebpf.workspace = true
 network-types.workspace = true
-solana-packet.workspace = true
 arrayvec.workspace = true

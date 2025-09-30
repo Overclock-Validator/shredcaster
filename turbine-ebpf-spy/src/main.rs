@@ -6,7 +6,7 @@ use core::mem;
 use arrayvec::ArrayVec;
 use aya_ebpf::{
     bindings::xdp_action::XDP_PASS,
-    helpers::r#gen::bpf_xdp_load_bytes,
+    helpers::generated::bpf_xdp_load_bytes,
     macros::{map, xdp},
     maps::{Array, RingBuf},
     programs::XdpContext,
@@ -16,14 +16,17 @@ use network_types::{
     ip::{IpProto, Ipv4Hdr, Ipv6Hdr},
     udp::UdpHdr,
 };
-use solana_packet::PACKET_DATA_SIZE;
+
+const PACKET_DATA_SIZE: usize = 1232;
 
 #[map]
 static TURBINE_PORT: Array<u16> = Array::with_max_entries(1, 0);
 
+const PACKET_BUF_SIZE: usize = mem::size_of::<ArrayVec<u8, PACKET_DATA_SIZE>>();
+
 // Store a max of 8192 packets
 #[map]
-static PACKET_BUF: RingBuf = RingBuf::with_byte_size(8192 * PACKET_DATA_SIZE as u32, 0);
+static PACKET_BUF: RingBuf = RingBuf::with_byte_size(8192 * PACKET_BUF_SIZE as u32, 0);
 
 #[xdp]
 pub fn xdp_turbine_probe(ctx: XdpContext) -> u32 {
@@ -91,14 +94,16 @@ fn try_xdp_turbine_probe(ctx: XdpContext) -> Result<u32, ()> {
     };
     unsafe {
         event.write(ArrayVec::new());
+        let packet_buf = event.assume_init_mut();
+
         match bpf_xdp_load_bytes(
             ctx.ctx,
             offset as u32,
-            (*event.as_mut_ptr()).as_mut_ptr() as *mut _,
+            packet_buf.as_mut_ptr() as *mut _,
             packet_data_len as u32,
         ) {
             0 => {
-                (*event.as_mut_ptr()).set_len(packet_data_len);
+                packet_buf.set_len(packet_data_len);
                 event.submit(0);
             }
             _ => event.discard(0),
@@ -106,4 +111,10 @@ fn try_xdp_turbine_probe(ctx: XdpContext) -> Result<u32, ()> {
     }
 
     Ok(XDP_PASS)
+}
+
+#[cfg(not(test))]
+#[panic_handler]
+fn panic(_info: &core::panic::PanicInfo) -> ! {
+    loop {}
 }

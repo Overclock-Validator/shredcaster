@@ -1,0 +1,16 @@
+[package]
+name = "turbine-forwarder"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.47.1", features = ["full"] }
+aya.workspace = true
+anyhow.workspace = true
+clap = { version = "4.5.48", features = ["derive"] }
+arrayvec.workspace = true
+
+[build-dependencies]
+cargo_metadata = "0.23.0"
+anyhow.workspace = true
+turbine-ebpf-spy = { path = "../turbine-ebpf-spy" }
