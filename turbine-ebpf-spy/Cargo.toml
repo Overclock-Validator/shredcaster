@@ -1,0 +1,10 @@
+[package]
+name = "turbine-ebpf-spy"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aya-ebpf.workspace = true
+network-types.workspace = true
+solana-packet.workspace = true
+arrayvec.workspace = true

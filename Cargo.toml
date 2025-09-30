@@ -1,0 +1,9 @@
+[workspace]
+resolver = "3"
+members = ["turbine-ebpf-spy"]
+
+[workspace.dependencies]
+aya-ebpf = "0.1.1"
+network-types = "0.1.0"
+solana-packet = "2.2.1"
+arrayvec = "0.7.6"
