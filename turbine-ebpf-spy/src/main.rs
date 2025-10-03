@@ -55,9 +55,8 @@ fn try_xdp_turbine_probe(ctx: XdpContext) -> Result<u32, ()> {
         return Ok(XDP_PASS);
     };
 
-    let mut offset = 0;
     let eth_hdr: *const EthHdr = unsafe { ptr_at(&ctx, 0)? };
-    offset += mem::size_of::<EthHdr>();
+    let mut offset = mem::size_of::<EthHdr>();
 
     match unsafe { (*eth_hdr).ether_type() } {
         Ok(EtherType::Ipv4) => {
@@ -95,6 +94,10 @@ fn try_xdp_turbine_probe(ctx: XdpContext) -> Result<u32, ()> {
     unsafe {
         event.write(ArrayVec::new());
         let packet_buf = event.assume_init_mut();
+        if offset > packet_data_len {
+            event.discard(0);
+            return Ok(XDP_PASS);
+        }
 
         match bpf_xdp_load_bytes(
             ctx.ctx,

@@ -91,7 +91,10 @@ async fn main() -> anyhow::Result<()> {
     program.attach(&args.iface, XdpFlags::default())?;
 
     let mut turbine_port_map = Array::try_from(bpf.map_mut("TURBINE_PORT").unwrap())?;
-    turbine_port_map.set(0, args.outgoing_port, 0)?;
+    turbine_port_map.set(0, args.port, 0)?;
+
+    println!("started watching turbine on {}", args.port);
+
     let turbine_packets = RingBuf::try_from(bpf.take_map("PACKET_BUF").unwrap())?;
 
     let (exit_tx, exit_rx) = oneshot::channel();
