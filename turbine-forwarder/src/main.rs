@@ -21,8 +21,6 @@ struct Args {
     port: u16,
     #[arg(short, long)]
     iface: String,
-    #[arg(default_value_t = 8192, short, long)]
-    outgoing_port: u16,
     #[arg(short, long)]
     listeners: Vec<SocketAddr>,
 }
@@ -107,7 +105,7 @@ async fn main() -> anyhow::Result<()> {
         }
     });
 
-    let pkt_fwder_socket = UdpSocket::bind(format!("0.0.0.0:{}", args.outgoing_port)).await?;
+    let pkt_fwder_socket = UdpSocket::bind("0.0.0.0:0").await?;
     let pkt_fwder = tokio::spawn(packet_forwarder(
         pkt_fwder_socket,
         args.listeners,
