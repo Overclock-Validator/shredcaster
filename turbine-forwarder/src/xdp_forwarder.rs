@@ -26,6 +26,7 @@ const TX_RING_SIZE: u32 = 1 << 12; // 4096 descriptors
 // Static memory buffer for UMEM (required for AF_XDP)
 static MEM: PacketMap = PacketMap(UnsafeCell::new([0; UMEM_SIZE]));
 
+#[repr(align(4096))]
 struct PacketMap(UnsafeCell<[u8; UMEM_SIZE]>);
 unsafe impl Sync for PacketMap {}
 unsafe impl Send for PacketMap {}
