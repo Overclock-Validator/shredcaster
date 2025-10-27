@@ -5,7 +5,7 @@ mod xdp_forwarder;
 use aya::{
     Ebpf, include_bytes_aligned,
     maps::{Array, MapData, RingBuf},
-    programs::{Xdp, XdpFlags},
+    programs::{SchedClassifier, TcAttachType, Xdp, XdpFlags, tc},
 };
 use clap::Parser;
 use tokio::{
@@ -22,6 +22,8 @@ struct Args {
     iface: String,
     #[arg(short, long)]
     listeners: Vec<SocketAddrV4>,
+    #[arg(short, long)]
+    egress_port: Option<u16>,
 }
 
 const PACKET_SIZE: usize = 1280;
@@ -64,6 +66,19 @@ fn packet_forwarder(
     }
 }
 
+fn load_tc_program(ebpf: &mut Ebpf, iface: &str) -> anyhow::Result<()> {
+    let program: &mut SchedClassifier = ebpf
+        .program_mut("tc_egress_probe")
+        .ok_or_else(|| anyhow::anyhow!("program not found"))?
+        .try_into()?;
+
+    _ = tc::qdisc_add_clsact(iface);
+    program.load()?;
+    program.attach(iface, TcAttachType::Egress)?;
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let args = Args::parse();
@@ -79,6 +94,15 @@ async fn main() -> anyhow::Result<()> {
         .try_into()?;
     program.load()?;
     program.attach(&args.iface, XdpFlags::default())?;
+
+    if let Some(egress_port) = args.egress_port {
+        load_tc_program(&mut bpf, &args.iface)?;
+        let mut shred_egress_port_map = Array::try_from(bpf.map_mut("SHRED_EGRESS_PORT").unwrap())?;
+        shred_egress_port_map.set(0, egress_port, 0)?;
+        println!("started watching turbine egress on {egress_port}");
+    } else {
+        eprintln!("not watching turbine egress as no egress port was specified");
+    }
 
     let mut turbine_port_map = Array::try_from(bpf.map_mut("TURBINE_PORT").unwrap())?;
     turbine_port_map.set(0, args.port, 0)?;
