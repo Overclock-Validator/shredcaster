@@ -55,7 +55,8 @@ async fn turbine_watcher_loop<T: Borrow<MapData>>(
                 break;
             }
             mut guard = reader.readable_mut() => {
-                let rb = guard.as_mut().unwrap().get_inner_mut();
+                let guard = guard.as_mut().unwrap();
+                let rb = guard.get_inner_mut();
 
                 let mut ingress_packets = 0;
                 let mut egress_packets = 0;
@@ -70,6 +71,7 @@ async fn turbine_watcher_loop<T: Borrow<MapData>>(
                     }
                 }
                 packet_counter.add(egress_packets, ingress_packets);
+                guard.clear_ready();
             }
         }
     }
