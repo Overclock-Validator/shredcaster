@@ -4,11 +4,11 @@ use std::{
         Arc,
         atomic::{AtomicUsize, Ordering},
     },
+    thread::sleep,
     time::Duration,
 };
 
 use crossterm::{ExecutableCommand, cursor, terminal};
-use tokio::time::sleep;
 
 pub type SharedPacketCtr = Arc<PacketCtr>;
 
@@ -25,7 +25,7 @@ impl PacketCtr {
     }
 }
 
-pub async fn start_packet_counter_print_loop(this: SharedPacketCtr) -> anyhow::Result<()> {
+pub fn start_packet_counter_print_loop(this: SharedPacketCtr) -> anyhow::Result<()> {
     let mut sto = io::stdout();
     while Arc::strong_count(&this) > 1 {
         let egress = this.egress.load(Ordering::SeqCst);
@@ -33,10 +33,10 @@ pub async fn start_packet_counter_print_loop(this: SharedPacketCtr) -> anyhow::R
         sto.execute(cursor::MoveToColumn(0))?
             .execute(terminal::Clear(terminal::ClearType::CurrentLine))?;
 
-        println!("Egress Packets: {egress} Ingress Packets: {ingress}");
+        print!("Egress Packets: {egress} Ingress Packets: {ingress}");
         sto.flush()?;
 
-        sleep(Duration::from_millis(300)).await;
+        sleep(Duration::from_millis(300));
     }
 
     Ok(())
