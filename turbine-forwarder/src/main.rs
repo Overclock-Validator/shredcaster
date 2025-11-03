@@ -33,6 +33,8 @@ struct Args {
     listeners: Vec<SocketAddr>,
     #[arg(short, long, default_value_t = 9122)]
     forwarder_port: u16,
+    #[arg(short, long, default_value_t = false)]
+    watch_egress: bool,
     #[arg(short, long)]
     egress_port: Option<u16>,
 }
@@ -113,13 +115,16 @@ async fn main() -> anyhow::Result<()> {
     program.load()?;
     program.attach(&args.iface, XdpFlags::default())?;
 
-    if let Some(egress_port) = args.egress_port {
+    if args.watch_egress {
         load_tc_program(&mut bpf, &args.iface)?;
-        let mut shred_egress_port_map = Array::try_from(bpf.map_mut("SHRED_EGRESS_PORT").unwrap())?;
-        shred_egress_port_map.set(0, egress_port, 0)?;
-        println!("started watching turbine egress on {egress_port}");
+        if let Some(egress_port) = args.egress_port {
+            let mut shred_egress_port_map =
+                Array::try_from(bpf.map_mut("SHRED_EGRESS_PORT").unwrap())?;
+            shred_egress_port_map.set(0, egress_port, 0)?;
+            println!("started watching turbine egress on {egress_port}");
+        }
     } else {
-        eprintln!("not watching turbine egress as no egress port was specified");
+        eprintln!("not watching turbine egress as disabled");
     }
 
     let nr_cpus = nr_cpus().map_err(|(_, error)| error)?;

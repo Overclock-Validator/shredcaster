@@ -26,9 +26,6 @@ pub fn tc_egress_probe(ctx: TcContext) -> i32 {
 }
 
 fn try_tc_egress_probe(ctx: TcContext) -> Result<i32, ()> {
-    let Some(&shred_egress_port) = SHRED_EGRESS_PORT.get(0) else {
-        return Ok(TC_ACT_PIPE);
-    };
     let ethhdr: EthHdr = ctx.load(0).map_err(|_| ())?;
     match ethhdr.ether_type() {
         Ok(EtherType::Ipv4) => {}
@@ -44,7 +41,11 @@ fn try_tc_egress_probe(ctx: TcContext) -> Result<i32, ()> {
     }
 
     let udphdr: UdpHdr = ctx.load(offset).map_err(|_| ())?;
-    if udphdr.src_port() != shred_egress_port {
+    let shred_egress_port = SHRED_EGRESS_PORT.get(0);
+    if shred_egress_port
+        .map(|p| *p != udphdr.src_port())
+        .unwrap_or_default()
+    {
         return Ok(TC_ACT_PIPE);
     }
     let packet_data_len = udphdr.len() as usize - UdpHdr::LEN;
@@ -52,6 +53,22 @@ fn try_tc_egress_probe(ctx: TcContext) -> Result<i32, ()> {
         return Ok(TC_ACT_PIPE);
     }
     offset += UdpHdr::LEN;
+
+    // based on https://github.com/anza-xyz/agave/blob/v3.0.9/ledger/src/shred/wire.rs#L76
+    let shred_variant: u8 = ctx.load(offset + 64).map_err(|_| ())?;
+    let payload_size = match shred_variant & 0xF0 {
+        // merkle code shred
+        0x40 | 0x60 | 0x70 => 1228usize,
+        // merkle data shred
+        0x80 | 0x90 | 0xb0 => 1203,
+        _ => return Ok(TC_ACT_PIPE),
+    };
+    // if this is not equal
+    // the packet is not valid
+    // or the packet is a repair response
+    if packet_data_len != payload_size {
+        return Ok(TC_ACT_PIPE);
+    }
 
     let Some(mut event) = PACKET_BUF.reserve::<PacketBuf>(0) else {
         return Ok(TC_ACT_PIPE);
