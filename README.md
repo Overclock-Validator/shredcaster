@@ -15,7 +15,7 @@ Note: If XDP-based broadcast is enabled, a small change is required to forward l
 
 ## Architecture
 
-![Shredcaster Diagram](assets/Shredcaster_diagram.png)
+![shredcaster-diagram](https://github.com/Overclock-Validator/assets/blob/main/Shredcaster_diagram.png)
 
 ## Running Shredcaster
 
