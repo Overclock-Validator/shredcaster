@@ -1,6 +1,6 @@
 # Shredcaster
 
-"Shredcaster is a lightweight utility that lets any Solana full node (validator, RPC, or Mithril verifying node) forward Turbine (TVU) packets to arbitrary UDP listeners. Compared to existing open-source solutions, it offers several key improvements, including:
+Shredcaster is a lightweight utility that lets any Solana full node (validator, RPC, or Mithril verifying node) forward Turbine (TVU) packets to arbitrary UDP listeners. Compared to existing open-source solutions, it offers several key improvements, including:
 
 ## Proposed Architecture
 
