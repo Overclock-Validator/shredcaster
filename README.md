@@ -7,7 +7,7 @@ Key benefits:
 1) Standalone design – Requires little or no modification to the Solana client codebase.
 Note: If XDP-based broadcast is enabled, a small change is required to forward leader-produced shreds.
 
-2) No validator disruption – Works without restarting or reconfiguring the node.
+2) No node disruption – Works without restarting or reconfiguring the node.
 
 3) Minimal performance overhead – Uses eXpress Data Path (XDP) for efficient zero-copy packet forwarding.
 
