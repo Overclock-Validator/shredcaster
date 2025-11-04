@@ -16,16 +16,16 @@ Note: If XDP-based broadcast is enabled, a small change is required to forward l
 ## Architecture
 
 ```mermaid
-%%{init: {"theme": "base"}}%%
+%%{init: {"themeVariables": {"background": "#ffffff"}}}%%
 sequenceDiagram
     actor RL as Remote Listener
     participant NIC
 
-    box rgba(255, 0, 0, 1.0) User Space
+    box rgba(255, 0, 0, 0.2) User Space
     participant V as Validator
     participant SC as shredcaster
     end
-    box rgba(0, 0, 255, 1.0) Kernel Space
+    box rgba(0, 0, 255, 0.2) Kernel Space
     participant XP as XDP Probe
     participant TC as Traffic Control Probe
     participant KN as Kernel Netstack
@@ -34,7 +34,7 @@ sequenceDiagram
     NIC -) XP: Incoming Packet
     Note over SC,XP: Packet is a shred if:<br>1. is a UDP Packet<br>2. Matches Turbine Port<br>3. Payload Length <= 1232
     alt If packet is a shred
-        rect rgba(0, 255, 0, 1.0)
+        rect rgba(0, 255, 0, 0.2)
         XP -) SC: Copied Packet
         Note over XP,SC: Shared Memory(UMEM) Ring Buffer
         end
@@ -49,7 +49,7 @@ sequenceDiagram
     V -) KN: Egress Packet
     KN ->> TC: Egress Packet
     alt If packet is a shred
-        rect rgba(0, 255, 0, 1.0)
+        rect rgba(0, 255, 0, 0.2)
         TC -) SC: Copied Packet
         Note Over TC,SC: Shared Memory (UMEM) Ring Buffer
         end
@@ -58,7 +58,7 @@ sequenceDiagram
     KN ->> NIC: Egress Packet
 
     loop For each listener
-        rect rgba(0, 255, 0, 1.0)
+        rect rgba(0, 255, 0, 0.2)
         SC -) NIC: Modified Packet
         Note over SC, NIC: shredcaster modifies Ethernet, IPv4, UDP header<br> Sent via AF_XDP
         end
