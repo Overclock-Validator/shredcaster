@@ -825,7 +825,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "shred-forwarder"
+name = "shredcaster"
 version = "0.1.0"
 dependencies = [
  "agave-xdp",
