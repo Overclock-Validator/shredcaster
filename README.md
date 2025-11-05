@@ -5,7 +5,7 @@ Shredcaster is a lightweight standalone utility that allows any Solana full node
 Key benefits:
 
 1) Standalone design – Requires little or no modification to the Solana client codebase.
-Note: If XDP-based broadcast is enabled, a small change is required to forward leader-produced shreds.
+Note: If XDP-based broadcast is enabled by a validator, a small change is required to forward shreds during leader slots (a work in progress and will be completed soon)
 
 2) No node disruption – Works without restarting or reconfiguring the node.
 
