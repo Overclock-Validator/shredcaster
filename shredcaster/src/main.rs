@@ -13,13 +13,15 @@ use arrayvec::ArrayVec;
 // mod xdp_forwarder;
 use aya::{
     Ebpf, include_bytes_aligned,
-    maps::{Array, MapData, PerCpuValues, RingBuf},
-    programs::{SchedClassifier, TcAttachType, Xdp, XdpFlags, tc},
+    maps::{MapData, PerCpuValues, RingBuf},
+    programs::{SchedClassifier, TcAttachType, tc},
     util::nr_cpus,
 };
 use clap::Parser;
 use crossbeam_channel::TryRecvError;
 use tokio::{io::unix::AsyncFd, signal, sync::oneshot};
+use uuid::Uuid;
+use xdp_dispatcher::{EbpfPrograms, XdpDispatcher};
 
 use crate::metrics::{PacketCtr, SharedPacketCtr, start_packet_counter_print_loop};
 
@@ -103,29 +105,27 @@ async fn main() -> anyhow::Result<()> {
         ));
     }
 
-    let mut bpf = Ebpf::load(include_bytes_aligned!(concat!(
-        env!("OUT_DIR"),
-        "/turbine-ebpf-spy.o"
-    )))?;
+    let bpf_bytes = include_bytes_aligned!(concat!(env!("OUT_DIR"), "/turbine-ebpf-spy.o"));
 
-    let program: &mut Xdp = bpf
-        .program_mut("xdp_turbine_probe")
-        .ok_or_else(|| anyhow::anyhow!("program not found"))?
-        .try_into()?;
-    program.load()?;
-    program.attach(&args.iface, XdpFlags::default())?;
+    let ebpf_id = Uuid::new_v4().to_string();
+    let ebpf_programs =
+        EbpfPrograms::new(ebpf_id.clone(), bpf_bytes).set_priority("xdp_turbine_probe", 1);
 
-    if args.watch_egress {
-        load_tc_program(&mut bpf, &args.iface)?;
-        if let Some(egress_port) = args.egress_port {
-            let mut shred_egress_port_map =
-                Array::try_from(bpf.map_mut("SHRED_EGRESS_PORT").unwrap())?;
-            shred_egress_port_map.set(0, egress_port, 0)?;
-            println!("started watching turbine egress on {egress_port}");
-        }
-    } else {
-        eprintln!("not watching turbine egress as disabled");
-    }
+    let mut dispatcher =
+        XdpDispatcher::new_with_programs(args.iface.clone(), vec![&ebpf_programs])?;
+    let bpf = dispatcher.ebpf_mut(&ebpf_id).unwrap();
+
+    // if args.watch_egress {
+    //     load_tc_program(&mut bpf, &args.iface)?;
+    //     if let Some(egress_port) = args.egress_port {
+    //         let mut shred_egress_port_map =
+    //             Array::try_from(bpf.map_mut("SHRED_EGRESS_PORT").unwrap())?;
+    //         shred_egress_port_map.set(0, egress_port, 0)?;
+    //         println!("started watching turbine egress on {egress_port}");
+    //     }
+    // } else {
+    //     eprintln!("not watching turbine egress as disabled");
+    // }
 
     let nr_cpus = nr_cpus().map_err(|(_, error)| error)?;
     let mut turbine_port_map =

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["turbine-ebpf-spy", "shredcaster", "udp-receiver", "udp-spammer"]
+members = ["turbine-ebpf-spy", "shredcaster", "udp-receiver", "udp-spammer", "ebpf-dispatcher", "ebpf-common", "xdp-dispatcher", "ebpf-builder", "dummy-ebpf", "dummy-xdp-loader"]
 default-members = ["shredcaster"]
 
 [workspace.dependencies]
@@ -12,6 +12,8 @@ aya = { git = "https://github.com/aya-rs/aya.git" }
 aya-build = { git = "https://github.com/aya-rs/aya.git" } 
 anyhow = "1.0.100"
 futures = "0.3.31"
+thiserror = "2.0.17"
+log = "0.4.28"
 
 [profile.release.package.turbine-ebpf-spy]
 debug = 2

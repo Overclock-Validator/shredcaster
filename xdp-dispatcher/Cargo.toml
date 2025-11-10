@@ -1,0 +1,15 @@
+[package]
+name = "xdp-dispatcher"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+aya.workspace = true
+thiserror.workspace = true
+named-lock = "0.4.1"
+ebpf-common = { path = "../ebpf-common", features = ["user"] }
+log.workspace = true
+
+[build-dependencies]
+ebpf-dispatcher = { path = "../ebpf-dispatcher" }
+ebpf-builder = { path = "../ebpf-builder" }

@@ -1,0 +1,9 @@
+[package]
+name = "ebpf-builder"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+cargo_metadata = "0.23.0"
+thiserror.workspace = true
+
