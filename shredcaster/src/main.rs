@@ -8,20 +8,24 @@ use std::{
     time::Duration,
 };
 
-use agave_xdp::device::{NetworkDevice, QueueId};
+use agave_xdp::{
+    device::{NetworkDevice, QueueId},
+    dispatcher::{EbpfPrograms, XdpDispatcher},
+};
+use anyhow::anyhow;
 use arrayvec::ArrayVec;
 // mod xdp_forwarder;
 use aya::{
-    Ebpf, include_bytes_aligned,
+    Ebpf, EbpfLoader, include_bytes_aligned,
     maps::{MapData, PerCpuValues, RingBuf},
-    programs::{SchedClassifier, TcAttachType, tc},
+    programs::{SchedClassifier, TcAttachType, XdpFlags, tc},
     util::nr_cpus,
 };
 use clap::Parser;
 use crossbeam_channel::TryRecvError;
+use nix::net::if_::if_nametoindex;
 use tokio::{io::unix::AsyncFd, signal, sync::oneshot};
 use uuid::Uuid;
-use xdp_dispatcher::{EbpfPrograms, XdpDispatcher};
 
 use crate::metrics::{PacketCtr, SharedPacketCtr, start_packet_counter_print_loop};
 
@@ -108,11 +112,13 @@ async fn main() -> anyhow::Result<()> {
     let bpf_bytes = include_bytes_aligned!(concat!(env!("OUT_DIR"), "/turbine-ebpf-spy.o"));
 
     let ebpf_id = Uuid::new_v4().to_string();
-    let ebpf_programs =
-        EbpfPrograms::new(ebpf_id.clone(), bpf_bytes).set_priority("xdp_turbine_probe", 1);
+    let mut ebpf_programs = EbpfPrograms::new(ebpf_id.clone(), EbpfLoader::new(), bpf_bytes)
+        .set_priority("xdp_turbine_probe", 1);
 
+    let iface_idx = if_nametoindex(args.iface.as_str())?;
     let mut dispatcher =
-        XdpDispatcher::new_with_programs(args.iface.clone(), vec![&ebpf_programs])?;
+        XdpDispatcher::new_with_programs(iface_idx, XdpFlags::DRV_MODE, vec![&mut ebpf_programs])
+            .map_err(|e| anyhow!("{e}"))?;
     let bpf = dispatcher.ebpf_mut(&ebpf_id).unwrap();
 
     // if args.watch_egress {
@@ -183,7 +189,7 @@ async fn main() -> anyhow::Result<()> {
         agave_xdp::tx_loop::tx_loop(
             0,
             &NetworkDevice::new(&args.iface).unwrap(),
-            QueueId(0),
+            QueueId(82),
             false,
             None,
             None,
