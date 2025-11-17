@@ -25,7 +25,6 @@ use clap::Parser;
 use crossbeam_channel::TryRecvError;
 use nix::net::if_::if_nametoindex;
 use tokio::{io::unix::AsyncFd, signal, sync::oneshot};
-use uuid::Uuid;
 
 use crate::metrics::{PacketCtr, SharedPacketCtr, start_packet_counter_print_loop};
 
@@ -111,9 +110,9 @@ async fn main() -> anyhow::Result<()> {
 
     let bpf_bytes = include_bytes_aligned!(concat!(env!("OUT_DIR"), "/turbine-ebpf-spy.o"));
 
-    let ebpf_id = Uuid::new_v4().to_string();
-    let mut ebpf_programs = EbpfPrograms::new(ebpf_id.clone(), EbpfLoader::new(), bpf_bytes)
+    let mut ebpf_programs = EbpfPrograms::new(EbpfLoader::new(), bpf_bytes)
         .set_priority("xdp_turbine_probe", 1);
+    let ebpf_id = ebpf_programs.ebpf_id.clone();
 
     let iface_idx = if_nametoindex(args.iface.as_str())?;
     let mut dispatcher =

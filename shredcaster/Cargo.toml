@@ -14,8 +14,7 @@ crossbeam-channel = "0.5.15"
 # agave-xdp = "3.0.7"
 crossterm = "0.29.0"
 # xdp-dispatcher = { path = "../xdp-dispatcher" }
-uuid = { version = "1.18.1", features = ["v4"] }
-agave-xdp = { git = "https://github.com/Overclock-Validator/agave.git", rev = "420b39cbb40618355802f30cf3afb2ea79990652" }
+agave-xdp = { git = "https://github.com/Overclock-Validator/agave.git", rev = "323b96ae71279178f47652eec1ff40c717024f11" }
 nix = { version = "0.30.1", features = ["net"] }
 
 [build-dependencies]
