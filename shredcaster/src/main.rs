@@ -181,9 +181,9 @@ async fn main() -> anyhow::Result<()> {
 
     let pkt_fwder = std::thread::spawn(move || {
         agave_xdp::tx_loop::tx_loop(
-            0,
+            2,
             &NetworkDevice::new(&args.iface).unwrap(),
-            QueueId(0),
+            QueueId(2),
             false,
             None,
             None,
