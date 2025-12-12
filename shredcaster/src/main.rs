@@ -39,6 +39,8 @@ struct Args {
     watch_egress: bool,
     #[arg(short, long)]
     egress_port: Option<u16>,
+    #[arg(long, default_value_t = 2)]
+    tx_pinned_cpu_core: usize,
 }
 
 const PACKET_DATA_SIZE: usize = 1232;
@@ -184,9 +186,9 @@ async fn main() -> anyhow::Result<()> {
 
     let pkt_fwder = std::thread::spawn(move || {
         agave_xdp::tx_loop::tx_loop(
-            2,
+            args.tx_pinned_cpu_core,
             &NetworkDevice::new(&args.iface).unwrap(),
-            QueueId(2),
+            QueueId(args.tx_pinned_cpu_core as u64),
             false,
             None,
             None,
