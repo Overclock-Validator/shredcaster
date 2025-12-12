@@ -1,7 +1,7 @@
 {
   description = "A basic flake providing a shell with rustup";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     rust-overlay.url = "github:oxalica/rust-overlay";
     flake-utils.url = "github:numtide/flake-utils";
   };
@@ -21,9 +21,7 @@
           nativeBuildInputs = with pkgs; [
             rustup
             (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
-            (bpf-linker.override {
-              llvmPackages_20 = llvmPackages_21;
-            })
+            bpf-linker
           ];
           shellHook = ''
             export RUSTC_NIGHTLY="${rust-nightly}/bin/rustc"
