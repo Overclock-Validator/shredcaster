@@ -29,6 +29,8 @@ struct Args {
     tvu_ports: Vec<u16>,
     #[arg(short, long)]
     iface: String,
+    #[arg(long)]
+    egress_iface: Option<String>,
     #[arg(short, long)]
     listeners: Vec<SocketAddr>,
     #[arg(short, long, default_value_t = 9122)]
@@ -116,7 +118,8 @@ async fn main() -> anyhow::Result<()> {
     program.attach(&args.iface, XdpFlags::default())?;
 
     if args.watch_egress {
-        load_tc_program(&mut bpf, &args.iface)?;
+        let egress_iface = args.egress_iface.as_deref().unwrap_or(&args.iface);
+        load_tc_program(&mut bpf, egress_iface)?;
         if let Some(egress_port) = args.egress_port {
             let mut shred_egress_port_map =
                 Array::try_from(bpf.map_mut("SHRED_EGRESS_PORT").unwrap())?;
