@@ -25,21 +25,31 @@ use crate::metrics::{PacketCtr, SharedPacketCtr, start_packet_counter_print_loop
 
 #[derive(Parser)]
 struct Args {
+    /// The TVU ports to monitor
     #[arg(short, long)]
     tvu_ports: Vec<u16>,
+    /// The network interface to attach to
     #[arg(short, long)]
     iface: String,
+    /// The egress interface to attach to (if different from ingress)
     #[arg(long)]
     egress_iface: Option<String>,
+    /// A list of UDP listeners to forward packets to
     #[arg(short, long)]
     listeners: Vec<SocketAddr>,
+    /// The port to use for forwarding packets
     #[arg(short, long, default_value_t = 9122)]
     forwarder_port: u16,
+    /// Whether to watch turbine egress traffic (experimental)
     #[arg(short, long, default_value_t = false)]
     watch_egress: bool,
+    /// Egress port to filter on, if known
     #[arg(short, long)]
     egress_port: Option<u16>,
-    #[arg(long, default_value_t = 2)]
+    /// The CPU core to pin the TX thread to  
+    /// IMPORTANT: This must not live on a CPU Heavy Core (e.g PoH core 0)  
+    /// the default is 2 to ensure maximal compatibility
+    #[arg(long, default_value_t = 2, verbatim_doc_comment)]
     tx_pinned_cpu_core: usize,
 }
 
