@@ -11,8 +11,12 @@ clap = { version = "4.5.48", features = ["derive"] }
 arrayvec.workspace = true
 futures.workspace = true
 crossbeam-channel = "0.5.15"
-agave-xdp = "3.0.7"
+agave-xdp = { version = "3.0.12", features = ["agave-unstable-api"] }
 crossterm = "0.29.0"
+solana-ledger = { version = "3.0.12", features = ["agave-unstable-api"] }
+wtransport = "0.6.1"
+serde = "1.0.228"
+sonic-rs = "0.3"
 
 [build-dependencies]
 cargo_metadata = "0.23.0"
