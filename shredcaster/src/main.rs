@@ -1,10 +1,11 @@
+mod config;
 mod metrics;
 mod shred_sampler;
 
 use std::{
     borrow::Borrow,
     net::SocketAddr,
-    sync::Arc,
+    sync::{Arc, Mutex},
     thread::{self},
     time::Duration,
 };
@@ -18,59 +19,15 @@ use aya::{
     programs::{SchedClassifier, TcAttachType, Xdp, XdpFlags, tc},
     util::nr_cpus,
 };
-use clap::Parser;
 use crossbeam_channel::TryRecvError;
 use tokio::{io::unix::AsyncFd, signal, sync::oneshot, task::JoinHandle};
 use wtransport::Identity;
 
 use crate::{
+    config::Config,
     metrics::{PacketCtr, SharedPacketCtr, start_packet_counter_print_loop},
     shred_sampler::{NoOpShredSamplerTx, ShredSamplerTx, spawn_webtransport_shred_sampler},
 };
-
-#[derive(Parser)]
-struct Args {
-    /// The TVU ports to monitor
-    #[arg(short, long)]
-    tvu_ports: Vec<u16>,
-    /// The network interface to attach to
-    #[arg(short, long)]
-    iface: String,
-    /// The egress interface to attach to (if different from ingress)
-    #[arg(long)]
-    egress_iface: Option<String>,
-    /// A list of UDP listeners to forward packets to
-    #[arg(short, long)]
-    listeners: Vec<SocketAddr>,
-    /// The port to use for forwarding packets
-    #[arg(short, long, default_value_t = 9122)]
-    forwarder_port: u16,
-    /// Whether to watch turbine egress traffic (experimental)
-    #[arg(short, long, default_value_t = false)]
-    watch_egress: bool,
-    /// Egress port to filter on, if known
-    #[arg(short, long)]
-    egress_port: Option<u16>,
-    /// The CPU core to pin the TX thread to  
-    /// IMPORTANT: This must not live on a CPU Heavy Core (e.g PoH core 0)  
-    /// the default is 2 to ensure maximal compatibility
-    #[arg(long, default_value_t = 2, verbatim_doc_comment)]
-    tx_pinned_cpu_core: usize,
-    /// Optional path to a PEM encoded TLS certificate for WebTransport
-    /// enables webtransport server if set
-    /// webtransport_private_key must also be set
-    #[arg(long, verbatim_doc_comment)]
-    webtransport_cert: Option<String>,
-    /// Path to a PEM encoded TLS private key for WebTransport
-    #[arg(long, verbatim_doc_comment)]
-    webtransport_private_key: Option<String>,
-    /// The auth token for WebTransport connections
-    /// must be set if webtransport server is enabled
-    #[arg(long, verbatim_doc_comment)]
-    webtransport_auth_token: Option<String>,
-    #[arg(long, default_value_t = 4433)]
-    webtransport_port: u16,
-}
 
 const PACKET_DATA_SIZE: usize = 1232;
 
@@ -92,7 +49,7 @@ impl AsRef<[u8]> for SharedPacketData {
 async fn turbine_watcher_loop<T: Borrow<MapData>>(
     map: RingBuf<T>,
     tx: crossbeam_channel::Sender<(Arc<[SocketAddr]>, SharedPacketData)>,
-    listeners: Arc<[SocketAddr]>,
+    listeners: Arc<Mutex<Arc<[SocketAddr]>>>,
     mut shred_sampler: impl ShredSamplerTx,
     packet_counter: SharedPacketCtr,
     mut exit: oneshot::Receiver<()>,
@@ -107,6 +64,7 @@ async fn turbine_watcher_loop<T: Borrow<MapData>>(
             mut guard = reader.readable_mut() => {
                 let guard = guard.as_mut().unwrap();
                 let rb = guard.get_inner_mut();
+                let listeners = listeners.lock().unwrap().clone();
 
                 let mut ingress_packets = 0;
                 let mut egress_packets = 0;
@@ -150,7 +108,7 @@ fn load_tc_program(ebpf: &mut Ebpf, iface: &str) -> anyhow::Result<()> {
 fn spawn_turbine_watcher<T: Borrow<MapData> + 'static + Send>(
     map: RingBuf<T>,
     tx: crossbeam_channel::Sender<(Arc<[SocketAddr]>, SharedPacketData)>,
-    listeners: Arc<[SocketAddr]>,
+    listeners: Arc<Mutex<Arc<[SocketAddr]>>>,
     shred_sampler: impl ShredSamplerTx + 'static + Send,
     packet_counter: SharedPacketCtr,
     exit: oneshot::Receiver<()>,
@@ -166,7 +124,7 @@ fn spawn_turbine_watcher<T: Borrow<MapData> + 'static + Send>(
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let args = Args::parse();
+    let args = Config::load()?;
 
     if args.tvu_ports.is_empty() || args.tvu_ports.len() > 100 {
         return Err(anyhow::anyhow!(
@@ -202,7 +160,7 @@ async fn main() -> anyhow::Result<()> {
     let nr_cpus = nr_cpus().map_err(|(_, error)| error)?;
     let mut turbine_port_map =
         aya::maps::PerCpuHashMap::<_, _, u8>::try_from(bpf.map_mut("TURBINE_PORTS").unwrap())?;
-    for port in args.tvu_ports {
+    for port in args.tvu_ports.iter().copied() {
         turbine_port_map.insert(port, PerCpuValues::try_from(vec![0; nr_cpus])?, 0)?;
         println!("started watching turbine on {port}");
     }
@@ -216,7 +174,7 @@ async fn main() -> anyhow::Result<()> {
     let (packet_tx, packet_rx) = crossbeam_channel::unbounded();
     let (drop_sender, drop_rx) = crossbeam_channel::unbounded();
 
-    let shared_listeners = Arc::from(args.listeners);
+    let (_conf_watcher, shared_listeners) = args.spawn_config_listener()?;
     let packet_counter_c = packet_counter.clone();
     let turbine_loop = if let Some(cert_path) = args.webtransport_cert {
         let webtransport_key = args.webtransport_private_key.ok_or_else(|| {

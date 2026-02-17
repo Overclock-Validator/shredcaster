@@ -17,6 +17,8 @@ solana-ledger = { version = "3.0.12", features = ["agave-unstable-api"] }
 wtransport = "0.6.1"
 serde = "1.0.228"
 sonic-rs = "0.3"
+figment = { version = "0.10.19", features = ["toml"] }
+notify = "8.1.0"
 
 [build-dependencies]
 cargo_metadata = "0.23.0"
