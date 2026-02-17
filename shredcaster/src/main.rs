@@ -5,7 +5,7 @@ mod shred_sampler;
 use std::{
     borrow::Borrow,
     net::SocketAddr,
-    sync::{Arc, Mutex},
+    sync::Arc,
     thread::{self},
     time::Duration,
 };
@@ -24,7 +24,7 @@ use tokio::{io::unix::AsyncFd, signal, sync::oneshot, task::JoinHandle};
 use wtransport::Identity;
 
 use crate::{
-    config::Config,
+    config::{Config, MaybeSharedListeners},
     metrics::{PacketCtr, SharedPacketCtr, start_packet_counter_print_loop},
     shred_sampler::{NoOpShredSamplerTx, ShredSamplerTx, spawn_webtransport_shred_sampler},
 };
@@ -49,7 +49,7 @@ impl AsRef<[u8]> for SharedPacketData {
 async fn turbine_watcher_loop<T: Borrow<MapData>>(
     map: RingBuf<T>,
     tx: crossbeam_channel::Sender<(Arc<[SocketAddr]>, SharedPacketData)>,
-    listeners: Arc<Mutex<Arc<[SocketAddr]>>>,
+    listeners: MaybeSharedListeners,
     mut shred_sampler: impl ShredSamplerTx,
     packet_counter: SharedPacketCtr,
     mut exit: oneshot::Receiver<()>,
@@ -64,7 +64,7 @@ async fn turbine_watcher_loop<T: Borrow<MapData>>(
             mut guard = reader.readable_mut() => {
                 let guard = guard.as_mut().unwrap();
                 let rb = guard.get_inner_mut();
-                let listeners = listeners.lock().unwrap().clone();
+                let listeners = listeners.get();
 
                 let mut ingress_packets = 0;
                 let mut egress_packets = 0;
@@ -108,7 +108,7 @@ fn load_tc_program(ebpf: &mut Ebpf, iface: &str) -> anyhow::Result<()> {
 fn spawn_turbine_watcher<T: Borrow<MapData> + 'static + Send>(
     map: RingBuf<T>,
     tx: crossbeam_channel::Sender<(Arc<[SocketAddr]>, SharedPacketData)>,
-    listeners: Arc<Mutex<Arc<[SocketAddr]>>>,
+    listeners: MaybeSharedListeners,
     shred_sampler: impl ShredSamplerTx + 'static + Send,
     packet_counter: SharedPacketCtr,
     exit: oneshot::Receiver<()>,

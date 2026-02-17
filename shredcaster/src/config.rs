@@ -14,6 +14,20 @@ use serde::{Deserialize, Serialize};
 
 const CONFIG_TOML: &str = "./config.toml";
 
+pub enum MaybeSharedListeners {
+    Static(Arc<[SocketAddr]>),
+    Shared(Arc<Mutex<Arc<[SocketAddr]>>>),
+}
+
+impl MaybeSharedListeners {
+    pub fn get(&self) -> Arc<[SocketAddr]> {
+        match self {
+            MaybeSharedListeners::Static(listeners) => listeners.clone(),
+            MaybeSharedListeners::Shared(mutex) => mutex.lock().unwrap().clone(),
+        }
+    }
+}
+
 #[derive(Parser, Serialize, Deserialize, Clone)]
 pub struct Config {
     /// The TVU ports to monitor
@@ -69,7 +83,15 @@ impl Config {
 
     pub fn spawn_config_listener(
         &self,
-    ) -> anyhow::Result<(notify::RecommendedWatcher, Arc<Mutex<Arc<[SocketAddr]>>>)> {
+    ) -> anyhow::Result<(Option<notify::RecommendedWatcher>, MaybeSharedListeners)> {
+        let config_path = Path::new(CONFIG_TOML);
+        if !config_path.exists() {
+            return Ok((
+                None,
+                MaybeSharedListeners::Static(self.listeners.clone().into()),
+            ));
+        }
+
         let current = self.clone();
         let val = Arc::new(Mutex::new(self.listeners.clone().into()));
         let val_c = val.clone();
@@ -94,8 +116,8 @@ impl Config {
                 }
                 Err(e) => eprintln!("watch error: {e}"),
             })?;
-        watcher.watch(Path::new(CONFIG_TOML), notify::RecursiveMode::NonRecursive)?;
+        watcher.watch(config_path, notify::RecursiveMode::NonRecursive)?;
 
-        Ok((watcher, val_c))
+        Ok((Some(watcher), MaybeSharedListeners::Shared(val_c)))
     }
 }
