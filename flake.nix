@@ -22,6 +22,7 @@
             rustup
             (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
             bpf-linker
+            rustPlatform.bindgenHook
           ];
           shellHook = ''
             export RUSTC_NIGHTLY="${rust-nightly}/bin/rustc"
