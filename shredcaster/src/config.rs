@@ -1,7 +1,7 @@
 use std::{
     net::SocketAddr,
     path::Path,
-    sync::{Arc, Mutex},
+    sync::{Arc, RwLock},
 };
 
 use clap::Parser;
@@ -16,14 +16,14 @@ const CONFIG_TOML: &str = "./config.toml";
 
 pub enum MaybeSharedListeners {
     Static(Arc<[SocketAddr]>),
-    Shared(Arc<Mutex<Arc<[SocketAddr]>>>),
+    Shared(Arc<RwLock<Arc<[SocketAddr]>>>),
 }
 
 impl MaybeSharedListeners {
     pub fn get(&self) -> Arc<[SocketAddr]> {
         match self {
             MaybeSharedListeners::Static(listeners) => listeners.clone(),
-            MaybeSharedListeners::Shared(mutex) => mutex.lock().unwrap().clone(),
+            MaybeSharedListeners::Shared(mutex) => mutex.read().unwrap().clone(),
         }
     }
 }
@@ -93,7 +93,7 @@ impl Config {
         }
 
         let current = self.clone();
-        let val = Arc::new(Mutex::new(self.listeners.clone().into()));
+        let val = Arc::new(RwLock::new(self.listeners.clone().into()));
         let val_c = val.clone();
         let mut watcher =
             notify::recommended_watcher(move |ev: notify::Result<notify::Event>| match ev {
@@ -112,7 +112,7 @@ impl Config {
                         "config was updated, updating listeners to: {:?}",
                         new_config.listeners
                     );
-                    *val.lock().unwrap() = new_config.listeners.into();
+                    *val.write().unwrap() = new_config.listeners.into();
                 }
                 Err(e) => eprintln!("watch error: {e}"),
             })?;
