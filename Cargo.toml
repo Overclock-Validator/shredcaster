@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["turbine-ebpf-spy", "shredcaster", "udp-receiver", "udp-spammer"]
+members = ["turbine-ebpf-spy", "shredcaster", "udp-receiver", "udp-spammer", "latency-measure"]
 default-members = ["shredcaster"]
 
 [workspace.dependencies]

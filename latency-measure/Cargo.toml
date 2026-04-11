@@ -1,0 +1,10 @@
+[package]
+name = "latency-measure"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.47.1", features = ["full"] }
+clap = { version = "4.5.48", features = ["derive"] }
+anyhow.workspace = true
+solana-ledger = { git = "https://github.com/Overclock-Validator/agave.git", rev = "bb110d1fad7f1523c13709dcd1a0336f9f9975b4", features = ["agave-unstable-api"] }

@@ -65,7 +65,20 @@ dependencies = [
  "solana-hash 3.1.0",
  "solana-pubkey 3.0.0",
  "solana-sha256-hasher",
- "solana-svm-feature-set",
+ "solana-svm-feature-set 3.0.13",
+]
+
+[[package]]
+name = "agave-feature-set"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "ahash 0.8.12",
+ "solana-epoch-schedule",
+ "solana-hash 3.1.0",
+ "solana-pubkey 3.0.0",
+ "solana-sha256-hasher",
+ "solana-svm-feature-set 3.0.14",
 ]
 
 [[package]]
@@ -82,12 +95,45 @@ dependencies = [
 ]
 
 [[package]]
+name = "agave-io-uring"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "io-uring",
+ "libc",
+ "log",
+ "slab",
+ "smallvec",
+]
+
+[[package]]
 name = "agave-precompiles"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bcdc9020fd34bb31e53b86941fd6e7f30bd49533497c7276df2f2a6fdef2b3e5"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
+ "bincode",
+ "digest 0.10.7",
+ "ed25519-dalek 1.0.1",
+ "libsecp256k1",
+ "openssl",
+ "sha3",
+ "solana-ed25519-program",
+ "solana-message",
+ "solana-precompile-error",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-secp256k1-program",
+ "solana-secp256r1-program",
+]
+
+[[package]]
+name = "agave-precompiles"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
  "bincode",
  "digest 0.10.7",
  "ed25519-dalek 1.0.1",
@@ -109,7 +155,17 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f434c15406d2326bab3b629bc4c37700c37607321a3e62097024d105841ca199"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+]
+
+[[package]]
+name = "agave-reserved-account-keys"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
  "solana-pubkey 3.0.0",
  "solana-sdk-ids",
 ]
@@ -130,14 +186,14 @@ dependencies = [
  "solana-bn254",
  "solana-clock",
  "solana-cpi",
- "solana-curve25519",
+ "solana-curve25519 3.0.13",
  "solana-hash 3.1.0",
  "solana-instruction",
  "solana-keccak-hasher",
  "solana-loader-v3-interface",
- "solana-poseidon",
+ "solana-poseidon 3.0.13",
  "solana-program-entrypoint",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-sbpf",
  "solana-sdk-ids",
@@ -145,15 +201,57 @@ dependencies = [
  "solana-sha256-hasher",
  "solana-stable-layout",
  "solana-stake-interface",
- "solana-svm-callback",
- "solana-svm-feature-set",
- "solana-svm-log-collector",
- "solana-svm-measure",
- "solana-svm-timings",
- "solana-svm-type-overrides",
+ "solana-svm-callback 3.0.13",
+ "solana-svm-feature-set 3.0.13",
+ "solana-svm-log-collector 3.0.13",
+ "solana-svm-measure 3.0.13",
+ "solana-svm-timings 3.0.13",
+ "solana-svm-type-overrides 3.0.13",
  "solana-sysvar",
  "solana-sysvar-id",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "agave-syscalls"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "bincode",
+ "libsecp256k1",
+ "num-traits",
+ "solana-account",
+ "solana-account-info",
+ "solana-big-mod-exp",
+ "solana-blake3-hasher",
+ "solana-bn254",
+ "solana-clock",
+ "solana-cpi",
+ "solana-curve25519 3.0.14",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-keccak-hasher",
+ "solana-loader-v3-interface",
+ "solana-poseidon 3.0.14",
+ "solana-program-entrypoint",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-sbpf",
+ "solana-sdk-ids",
+ "solana-secp256k1-recover",
+ "solana-sha256-hasher",
+ "solana-stable-layout",
+ "solana-stake-interface",
+ "solana-svm-callback 3.0.14",
+ "solana-svm-feature-set 3.0.14",
+ "solana-svm-log-collector 3.0.14",
+ "solana-svm-measure 3.0.14",
+ "solana-svm-timings 3.0.14",
+ "solana-svm-type-overrides 3.0.14",
+ "solana-sysvar",
+ "solana-sysvar-id",
+ "solana-transaction-context 3.0.14",
  "thiserror 2.0.17",
 ]
 
@@ -170,7 +268,22 @@ dependencies = [
  "solana-sdk-ids",
  "solana-short-vec",
  "solana-signature",
- "solana-svm-transaction",
+ "solana-svm-transaction 3.0.13",
+]
+
+[[package]]
+name = "agave-transaction-view"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "solana-hash 3.1.0",
+ "solana-message",
+ "solana-packet",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-short-vec",
+ "solana-signature",
+ "solana-svm-transaction 3.0.14",
 ]
 
 [[package]]
@@ -3109,6 +3222,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "latency-measure"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "solana-ledger 3.0.14",
+ "tokio",
+]
+
+[[package]]
 name = "lazy-lru"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5147,7 +5270,7 @@ dependencies = [
  "futures",
  "notify",
  "serde",
- "solana-ledger",
+ "solana-ledger 3.0.13",
  "sonic-rs",
  "tokio",
  "turbine-ebpf-spy",
@@ -5321,7 +5444,49 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "solana-account",
- "solana-account-decoder-client-types",
+ "solana-account-decoder-client-types 3.0.13",
+ "solana-address-lookup-table-interface",
+ "solana-clock",
+ "solana-config-interface",
+ "solana-epoch-schedule",
+ "solana-fee-calculator",
+ "solana-instruction",
+ "solana-loader-v3-interface",
+ "solana-nonce",
+ "solana-program-option",
+ "solana-program-pack",
+ "solana-pubkey 3.0.0",
+ "solana-rent",
+ "solana-sdk-ids",
+ "solana-slot-hashes",
+ "solana-slot-history",
+ "solana-stake-interface",
+ "solana-sysvar",
+ "solana-vote-interface",
+ "spl-generic-token",
+ "spl-token-2022-interface",
+ "spl-token-group-interface",
+ "spl-token-interface",
+ "spl-token-metadata-interface",
+ "thiserror 2.0.17",
+ "zstd",
+]
+
+[[package]]
+name = "solana-account-decoder"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "Inflector",
+ "base64 0.22.1",
+ "bincode",
+ "bs58",
+ "bv",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "solana-account",
+ "solana-account-decoder-client-types 3.0.14",
  "solana-address-lookup-table-interface",
  "solana-clock",
  "solana-config-interface",
@@ -5366,6 +5531,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-account-decoder-client-types"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "base64 0.22.1",
+ "bs58",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "solana-account",
+ "solana-pubkey 3.0.0",
+ "zstd",
+]
+
+[[package]]
 name = "solana-account-info"
 version = "3.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5382,7 +5562,7 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e47696557ab06aa3cecf002c6c024d238e6a107024708a5550b07def756d95eb"
 dependencies = [
- "agave-io-uring",
+ "agave-io-uring 3.0.13",
  "ahash 0.8.12",
  "bincode",
  "blake3",
@@ -5411,28 +5591,92 @@ dependencies = [
  "smallvec",
  "solana-account",
  "solana-address-lookup-table-interface",
- "solana-bucket-map",
+ "solana-bucket-map 3.0.13",
  "solana-clock",
  "solana-epoch-schedule",
  "solana-fee-calculator",
  "solana-genesis-config",
  "solana-hash 3.1.0",
- "solana-lattice-hash",
- "solana-measure",
+ "solana-lattice-hash 3.0.13",
+ "solana-measure 3.0.13",
  "solana-message",
- "solana-metrics",
+ "solana-metrics 3.0.13",
  "solana-nohash-hasher",
  "solana-pubkey 3.0.0",
- "solana-rayon-threadlimit",
+ "solana-rayon-threadlimit 3.0.13",
  "solana-reward-info",
  "solana-sha256-hasher",
  "solana-slot-hashes",
- "solana-svm-transaction",
+ "solana-svm-transaction 3.0.13",
  "solana-system-interface",
  "solana-sysvar",
  "solana-time-utils",
  "solana-transaction",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+ "solana-transaction-error",
+ "spl-generic-token",
+ "static_assertions",
+ "tar",
+ "tempfile",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-accounts-db"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-io-uring 3.0.14",
+ "ahash 0.8.12",
+ "bincode",
+ "blake3",
+ "bv",
+ "bytemuck",
+ "bytemuck_derive",
+ "bzip2",
+ "crossbeam-channel",
+ "dashmap",
+ "indexmap 2.11.4",
+ "io-uring",
+ "itertools 0.12.1",
+ "libc",
+ "log",
+ "lz4",
+ "memmap2 0.9.9",
+ "modular-bitfield",
+ "num_cpus",
+ "num_enum",
+ "rand 0.8.5",
+ "rayon",
+ "seqlock",
+ "serde",
+ "serde_derive",
+ "slab",
+ "smallvec",
+ "solana-account",
+ "solana-address-lookup-table-interface",
+ "solana-bucket-map 3.0.14",
+ "solana-clock",
+ "solana-epoch-schedule",
+ "solana-fee-calculator",
+ "solana-genesis-config",
+ "solana-hash 3.1.0",
+ "solana-lattice-hash 3.0.14",
+ "solana-measure 3.0.14",
+ "solana-message",
+ "solana-metrics 3.0.14",
+ "solana-nohash-hasher",
+ "solana-pubkey 3.0.0",
+ "solana-rayon-threadlimit 3.0.14",
+ "solana-reward-info",
+ "solana-sha256-hasher",
+ "solana-slot-hashes",
+ "solana-svm-transaction 3.0.14",
+ "solana-system-interface",
+ "solana-sysvar",
+ "solana-time-utils",
+ "solana-transaction",
+ "solana-transaction-context 3.0.14",
  "solana-transaction-error",
  "spl-generic-token",
  "static_assertions",
@@ -5562,7 +5806,7 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "954d798aa4477b99321cd10b9b55b559b64c39f547a584311c45af51c62d9125"
 dependencies = [
- "agave-syscalls",
+ "agave-syscalls 3.0.13",
  "bincode",
  "qualifier_attr",
  "solana-account",
@@ -5573,16 +5817,44 @@ dependencies = [
  "solana-loader-v4-interface",
  "solana-packet",
  "solana-program-entrypoint",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-sbpf",
  "solana-sdk-ids",
- "solana-svm-feature-set",
- "solana-svm-log-collector",
- "solana-svm-measure",
- "solana-svm-type-overrides",
+ "solana-svm-feature-set 3.0.13",
+ "solana-svm-log-collector 3.0.13",
+ "solana-svm-measure 3.0.13",
+ "solana-svm-type-overrides 3.0.13",
  "solana-system-interface",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+]
+
+[[package]]
+name = "solana-bpf-loader-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-syscalls 3.0.14",
+ "bincode",
+ "qualifier_attr",
+ "solana-account",
+ "solana-bincode",
+ "solana-clock",
+ "solana-instruction",
+ "solana-loader-v3-interface",
+ "solana-loader-v4-interface",
+ "solana-packet",
+ "solana-program-entrypoint",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-sbpf",
+ "solana-sdk-ids",
+ "solana-svm-feature-set 3.0.14",
+ "solana-svm-log-collector 3.0.14",
+ "solana-svm-measure 3.0.14",
+ "solana-svm-type-overrides 3.0.14",
+ "solana-system-interface",
+ "solana-transaction-context 3.0.14",
 ]
 
 [[package]]
@@ -5599,7 +5871,25 @@ dependencies = [
  "num_enum",
  "rand 0.8.5",
  "solana-clock",
- "solana-measure",
+ "solana-measure 3.0.13",
+ "solana-pubkey 3.0.0",
+ "tempfile",
+]
+
+[[package]]
+name = "solana-bucket-map"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "bv",
+ "bytemuck",
+ "bytemuck_derive",
+ "memmap2 0.9.9",
+ "modular-bitfield",
+ "num_enum",
+ "rand 0.8.5",
+ "solana-clock",
+ "solana-measure 3.0.14",
  "solana-pubkey 3.0.0",
  "tempfile",
 ]
@@ -5610,19 +5900,39 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "45f8668741a2c75429acdf6aa258a049e41b7b78be4f45fc28b84d5e34a743cf"
 dependencies = [
- "agave-feature-set",
- "solana-bpf-loader-program",
- "solana-compute-budget-program",
+ "agave-feature-set 3.0.13",
+ "solana-bpf-loader-program 3.0.13",
+ "solana-compute-budget-program 3.0.13",
  "solana-hash 3.1.0",
- "solana-loader-v4-program",
- "solana-program-runtime",
+ "solana-loader-v4-program 3.0.13",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-sdk-ids",
- "solana-stake-program",
- "solana-system-program",
- "solana-vote-program",
- "solana-zk-elgamal-proof-program",
- "solana-zk-token-proof-program",
+ "solana-stake-program 3.0.13",
+ "solana-system-program 3.0.13",
+ "solana-vote-program 3.0.13",
+ "solana-zk-elgamal-proof-program 3.0.13",
+ "solana-zk-token-proof-program 3.0.13",
+]
+
+[[package]]
+name = "solana-builtins"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "solana-bpf-loader-program 3.0.14",
+ "solana-compute-budget-program 3.0.14",
+ "solana-hash 3.1.0",
+ "solana-loader-v4-program 3.0.14",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-stake-program 3.0.14",
+ "solana-system-program 3.0.14",
+ "solana-vote-program 3.0.14",
+ "solana-zk-elgamal-proof-program 3.0.14",
+ "solana-zk-token-proof-program 3.0.14",
 ]
 
 [[package]]
@@ -5631,17 +5941,35 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "af195b8b76323602db655e5e4fd8d86c6b3b37803ad60d30b0ee5fe4762b636d"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "ahash 0.8.12",
  "log",
- "solana-bpf-loader-program",
- "solana-compute-budget-program",
- "solana-loader-v4-program",
+ "solana-bpf-loader-program 3.0.13",
+ "solana-compute-budget-program 3.0.13",
+ "solana-loader-v4-program 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-sdk-ids",
- "solana-stake-program",
- "solana-system-program",
- "solana-vote-program",
+ "solana-stake-program 3.0.13",
+ "solana-system-program 3.0.13",
+ "solana-vote-program 3.0.13",
+]
+
+[[package]]
+name = "solana-builtins-default-costs"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "ahash 0.8.12",
+ "log",
+ "solana-bpf-loader-program 3.0.14",
+ "solana-compute-budget-program 3.0.14",
+ "solana-loader-v4-program 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-stake-program 3.0.14",
+ "solana-system-program 3.0.14",
+ "solana-vote-program 3.0.14",
 ]
 
 [[package]]
@@ -5702,7 +6030,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "70ab87bdaf4afbe0b7f702887c1aaeb50a5732b211c120cfdbb78a061144769e"
 dependencies = [
  "solana-fee-structure",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
+]
+
+[[package]]
+name = "solana-compute-budget"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "solana-fee-structure",
+ "solana-program-runtime 3.0.14",
 ]
 
 [[package]]
@@ -5711,17 +6048,37 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5cad392ff395179bd10fe287d85b1ad2e98ef6eee0eb61e9abfe6acf58a41ee2"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "log",
  "solana-borsh",
- "solana-builtins-default-costs",
- "solana-compute-budget",
+ "solana-builtins-default-costs 3.0.13",
+ "solana-compute-budget 3.0.13",
  "solana-compute-budget-interface",
  "solana-instruction",
  "solana-packet",
  "solana-pubkey 3.0.0",
  "solana-sdk-ids",
- "solana-svm-transaction",
+ "solana-svm-transaction 3.0.13",
+ "solana-transaction-error",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-compute-budget-instruction"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "log",
+ "solana-borsh",
+ "solana-builtins-default-costs 3.0.14",
+ "solana-compute-budget 3.0.14",
+ "solana-compute-budget-interface",
+ "solana-instruction",
+ "solana-packet",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-svm-transaction 3.0.14",
  "solana-transaction-error",
  "thiserror 2.0.17",
 ]
@@ -5743,7 +6100,15 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c934f0579a33bd06ca9a0d183619981953921f1567ca9346a5f4b59ef635a67c"
 dependencies = [
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
+]
+
+[[package]]
+name = "solana-compute-budget-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "solana-program-runtime 3.0.14",
 ]
 
 [[package]]
@@ -5769,26 +6134,53 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e48988c0ad0cf6dfb49e61f79a512d78d154aa3430a8ee99795e3cf416440ea5"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "ahash 0.8.12",
  "log",
  "solana-bincode",
  "solana-borsh",
- "solana-builtins-default-costs",
+ "solana-builtins-default-costs 3.0.13",
  "solana-clock",
- "solana-compute-budget",
- "solana-compute-budget-instruction",
+ "solana-compute-budget 3.0.13",
+ "solana-compute-budget-instruction 3.0.13",
  "solana-compute-budget-interface",
  "solana-fee-structure",
- "solana-metrics",
+ "solana-metrics 3.0.13",
  "solana-packet",
  "solana-pubkey 3.0.0",
- "solana-runtime-transaction",
+ "solana-runtime-transaction 3.0.13",
  "solana-sdk-ids",
- "solana-svm-transaction",
+ "solana-svm-transaction 3.0.13",
  "solana-system-interface",
  "solana-transaction-error",
- "solana-vote-program",
+ "solana-vote-program 3.0.13",
+]
+
+[[package]]
+name = "solana-cost-model"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "ahash 0.8.12",
+ "log",
+ "solana-bincode",
+ "solana-borsh",
+ "solana-builtins-default-costs 3.0.14",
+ "solana-clock",
+ "solana-compute-budget 3.0.14",
+ "solana-compute-budget-instruction 3.0.14",
+ "solana-compute-budget-interface",
+ "solana-fee-structure",
+ "solana-metrics 3.0.14",
+ "solana-packet",
+ "solana-pubkey 3.0.0",
+ "solana-runtime-transaction 3.0.14",
+ "solana-sdk-ids",
+ "solana-svm-transaction 3.0.14",
+ "solana-system-interface",
+ "solana-transaction-error",
+ "solana-vote-program 3.0.14",
 ]
 
 [[package]]
@@ -5810,6 +6202,19 @@ name = "solana-curve25519"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "118fdacc7a92ee00731a9f050de1fc4c541f5a16a961a1d5ed992a162353d242"
+dependencies = [
+ "bytemuck",
+ "bytemuck_derive",
+ "curve25519-dalek 4.1.3",
+ "solana-define-syscall 3.0.0",
+ "subtle",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-curve25519"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
 dependencies = [
  "bytemuck",
  "bytemuck_derive",
@@ -5869,12 +6274,37 @@ dependencies = [
  "rayon",
  "serde",
  "solana-hash 3.1.0",
- "solana-measure",
- "solana-merkle-tree",
- "solana-metrics",
+ "solana-measure 3.0.13",
+ "solana-merkle-tree 3.0.13",
+ "solana-metrics 3.0.13",
  "solana-packet",
- "solana-perf",
- "solana-runtime-transaction",
+ "solana-perf 3.0.13",
+ "solana-runtime-transaction 3.0.13",
+ "solana-sha256-hasher",
+ "solana-transaction",
+ "solana-transaction-error",
+]
+
+[[package]]
+name = "solana-entry"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "bincode",
+ "crossbeam-channel",
+ "dlopen2",
+ "log",
+ "num_cpus",
+ "rand 0.8.5",
+ "rayon",
+ "serde",
+ "solana-hash 3.1.0",
+ "solana-measure 3.0.14",
+ "solana-merkle-tree 3.0.14",
+ "solana-metrics 3.0.14",
+ "solana-packet",
+ "solana-perf 3.0.14",
+ "solana-runtime-transaction 3.0.14",
  "solana-sha256-hasher",
  "solana-transaction",
  "solana-transaction-error",
@@ -5949,9 +6379,19 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4f0a6d00e9f352f7e2d2f86f127de9f648d38e3f84ae9be1f156883df58ea068"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "solana-fee-structure",
- "solana-svm-transaction",
+ "solana-svm-transaction 3.0.13",
+]
+
+[[package]]
+name = "solana-fee"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "solana-fee-structure",
+ "solana-svm-transaction 3.0.14",
 ]
 
 [[package]]
@@ -6149,13 +6589,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-lattice-hash"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "base64 0.22.1",
+ "blake3",
+ "bs58",
+ "bytemuck",
+]
+
+[[package]]
 name = "solana-ledger"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "092c7a6072155eede2096de1eb2efda22c894a4e8195083ba43c0498c3b87168"
 dependencies = [
- "agave-feature-set",
- "agave-reserved-account-keys",
+ "agave-feature-set 3.0.13",
+ "agave-reserved-account-keys 3.0.13",
  "anyhow",
  "assert_matches",
  "bincode",
@@ -6190,53 +6641,152 @@ dependencies = [
  "serde_bytes",
  "sha2 0.10.9",
  "solana-account",
- "solana-account-decoder",
- "solana-accounts-db",
+ "solana-account-decoder 3.0.13",
+ "solana-accounts-db 3.0.13",
  "solana-address-lookup-table-interface",
- "solana-bpf-loader-program",
+ "solana-bpf-loader-program 3.0.13",
  "solana-clock",
- "solana-cost-model",
- "solana-entry",
+ "solana-cost-model 3.0.13",
+ "solana-entry 3.0.13",
  "solana-epoch-schedule",
  "solana-genesis-config",
  "solana-hash 3.1.0",
  "solana-instruction",
  "solana-keypair",
- "solana-measure",
+ "solana-measure 3.0.13",
  "solana-message",
- "solana-metrics",
+ "solana-metrics 3.0.13",
  "solana-native-token",
- "solana-net-utils",
+ "solana-net-utils 3.0.13",
  "solana-nohash-hasher",
  "solana-packet",
- "solana-perf",
- "solana-program-runtime",
+ "solana-perf 3.0.13",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
- "solana-rayon-threadlimit",
- "solana-runtime",
- "solana-runtime-transaction",
+ "solana-rayon-threadlimit 3.0.13",
+ "solana-runtime 3.0.13",
+ "solana-runtime-transaction 3.0.13",
  "solana-seed-derivable",
  "solana-sha256-hasher",
  "solana-shred-version",
  "solana-signature",
  "solana-signer",
  "solana-stake-interface",
- "solana-stake-program",
- "solana-storage-bigtable",
- "solana-storage-proto",
- "solana-streamer",
- "solana-svm",
- "solana-svm-timings",
- "solana-svm-transaction",
+ "solana-stake-program 3.0.13",
+ "solana-storage-bigtable 3.0.13",
+ "solana-storage-proto 3.0.13",
+ "solana-streamer 3.0.13",
+ "solana-svm 3.0.13",
+ "solana-svm-timings 3.0.13",
+ "solana-svm-transaction 3.0.13",
  "solana-system-interface",
  "solana-system-transaction",
  "solana-time-utils",
  "solana-transaction",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
  "solana-transaction-error",
- "solana-transaction-status",
- "solana-vote",
- "solana-vote-program",
+ "solana-transaction-status 3.0.13",
+ "solana-vote 3.0.13",
+ "solana-vote-program 3.0.13",
+ "static_assertions",
+ "strum",
+ "strum_macros",
+ "tar",
+ "tempfile",
+ "thiserror 2.0.17",
+ "tokio",
+ "tokio-stream",
+ "trees",
+]
+
+[[package]]
+name = "solana-ledger"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "agave-reserved-account-keys 3.0.14",
+ "anyhow",
+ "assert_matches",
+ "bincode",
+ "bitflags 2.9.4",
+ "bytes",
+ "bzip2",
+ "chrono",
+ "chrono-humanize",
+ "conditional-mod",
+ "crossbeam-channel",
+ "dashmap",
+ "eager",
+ "fs_extra",
+ "futures",
+ "itertools 0.12.1",
+ "lazy-lru",
+ "libc",
+ "log",
+ "lru",
+ "mockall",
+ "num_cpus",
+ "num_enum",
+ "prost",
+ "qualifier_attr",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rayon",
+ "reed-solomon-erasure",
+ "rocksdb",
+ "scopeguard",
+ "serde",
+ "serde_bytes",
+ "sha2 0.10.9",
+ "solana-account",
+ "solana-account-decoder 3.0.14",
+ "solana-accounts-db 3.0.14",
+ "solana-address-lookup-table-interface",
+ "solana-bpf-loader-program 3.0.14",
+ "solana-clock",
+ "solana-cost-model 3.0.14",
+ "solana-entry 3.0.14",
+ "solana-epoch-schedule",
+ "solana-genesis-config",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-keypair",
+ "solana-measure 3.0.14",
+ "solana-message",
+ "solana-metrics 3.0.14",
+ "solana-native-token",
+ "solana-net-utils 3.0.14",
+ "solana-nohash-hasher",
+ "solana-packet",
+ "solana-perf 3.0.14",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-rayon-threadlimit 3.0.14",
+ "solana-runtime 3.0.14",
+ "solana-runtime-transaction 3.0.14",
+ "solana-seed-derivable",
+ "solana-sha256-hasher",
+ "solana-shred-version",
+ "solana-signature",
+ "solana-signer",
+ "solana-stake-interface",
+ "solana-stake-program 3.0.14",
+ "solana-storage-bigtable 3.0.14",
+ "solana-storage-proto 3.0.14",
+ "solana-streamer 3.0.14",
+ "solana-svm 3.0.14",
+ "solana-svm-timings 3.0.14",
+ "solana-svm-transaction 3.0.14",
+ "solana-system-interface",
+ "solana-system-transaction",
+ "solana-time-utils",
+ "solana-transaction",
+ "solana-transaction-context 3.0.14",
+ "solana-transaction-error",
+ "solana-transaction-status 3.0.14",
+ "solana-vote 3.0.14",
+ "solana-vote-program 3.0.14",
  "static_assertions",
  "strum",
  "strum_macros",
@@ -6302,19 +6852,43 @@ dependencies = [
  "qualifier_attr",
  "solana-account",
  "solana-bincode",
- "solana-bpf-loader-program",
+ "solana-bpf-loader-program 3.0.13",
  "solana-instruction",
  "solana-loader-v3-interface",
  "solana-loader-v4-interface",
  "solana-packet",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-sbpf",
  "solana-sdk-ids",
- "solana-svm-log-collector",
- "solana-svm-measure",
- "solana-svm-type-overrides",
- "solana-transaction-context",
+ "solana-svm-log-collector 3.0.13",
+ "solana-svm-measure 3.0.13",
+ "solana-svm-type-overrides 3.0.13",
+ "solana-transaction-context 3.0.13",
+]
+
+[[package]]
+name = "solana-loader-v4-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "log",
+ "qualifier_attr",
+ "solana-account",
+ "solana-bincode",
+ "solana-bpf-loader-program 3.0.14",
+ "solana-instruction",
+ "solana-loader-v3-interface",
+ "solana-loader-v4-interface",
+ "solana-packet",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-sbpf",
+ "solana-sdk-ids",
+ "solana-svm-log-collector 3.0.14",
+ "solana-svm-measure 3.0.14",
+ "solana-svm-type-overrides 3.0.14",
+ "solana-transaction-context 3.0.14",
 ]
 
 [[package]]
@@ -6324,10 +6898,25 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d851fc3cdd021db6dd939a0401beec6f923a62957ad278133cd88ca3afbe297a"
 
 [[package]]
+name = "solana-measure"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+
+[[package]]
 name = "solana-merkle-tree"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d1265519ebab3d18748c1dfac810bc84846a6cdee8b82fd96c66e19363413a79"
+dependencies = [
+ "fast-math",
+ "solana-hash 3.1.0",
+ "solana-sha256-hasher",
+]
+
+[[package]]
+name = "solana-merkle-tree"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
 dependencies = [
  "fast-math",
  "solana-hash 3.1.0",
@@ -6371,6 +6960,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-metrics"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "crossbeam-channel",
+ "gethostname",
+ "log",
+ "reqwest 0.12.26",
+ "solana-cluster-type",
+ "solana-sha256-hasher",
+ "solana-time-utils",
+ "thiserror 2.0.17",
+]
+
+[[package]]
 name = "solana-msg"
 version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6390,6 +6994,26 @@ name = "solana-net-utils"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fe551f6c1ffd617bc9fe46b9e760d200d9602d054b43fbae2c0bbc816aaec2ab"
+dependencies = [
+ "anyhow",
+ "bincode",
+ "bytes",
+ "itertools 0.12.1",
+ "log",
+ "nix",
+ "rand 0.8.5",
+ "serde",
+ "serde_derive",
+ "socket2 0.6.1",
+ "solana-serde",
+ "tokio",
+ "url",
+]
+
+[[package]]
+name = "solana-net-utils"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
 dependencies = [
  "anyhow",
  "bincode",
@@ -6474,10 +7098,41 @@ dependencies = [
  "serde",
  "solana-hash 3.1.0",
  "solana-message",
- "solana-metrics",
+ "solana-metrics 3.0.13",
  "solana-packet",
  "solana-pubkey 3.0.0",
- "solana-rayon-threadlimit",
+ "solana-rayon-threadlimit 3.0.13",
+ "solana-sdk-ids",
+ "solana-short-vec",
+ "solana-signature",
+ "solana-time-utils",
+]
+
+[[package]]
+name = "solana-perf"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "ahash 0.8.12",
+ "bincode",
+ "bv",
+ "bytes",
+ "caps",
+ "curve25519-dalek 4.1.3",
+ "dlopen2",
+ "fnv",
+ "libc",
+ "log",
+ "nix",
+ "rand 0.8.5",
+ "rayon",
+ "serde",
+ "solana-hash 3.1.0",
+ "solana-message",
+ "solana-metrics 3.0.14",
+ "solana-packet",
+ "solana-pubkey 3.0.0",
+ "solana-rayon-threadlimit 3.0.14",
  "solana-sdk-ids",
  "solana-short-vec",
  "solana-signature",
@@ -6499,6 +7154,17 @@ name = "solana-poseidon"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b6ae3ff29a98789a4d6b9e37082d3c246236351c4c1422d5bcc5f90713f5ecb7"
+dependencies = [
+ "ark-bn254",
+ "light-poseidon",
+ "solana-define-syscall 3.0.0",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-poseidon"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
 dependencies = [
  "ark-bn254",
  "light-poseidon",
@@ -6588,17 +7254,57 @@ dependencies = [
  "solana-sdk-ids",
  "solana-slot-hashes",
  "solana-stake-interface",
- "solana-svm-callback",
- "solana-svm-feature-set",
- "solana-svm-log-collector",
- "solana-svm-measure",
- "solana-svm-timings",
- "solana-svm-transaction",
- "solana-svm-type-overrides",
+ "solana-svm-callback 3.0.13",
+ "solana-svm-feature-set 3.0.13",
+ "solana-svm-log-collector 3.0.13",
+ "solana-svm-measure 3.0.13",
+ "solana-svm-timings 3.0.13",
+ "solana-svm-transaction 3.0.13",
+ "solana-svm-type-overrides 3.0.13",
  "solana-system-interface",
  "solana-sysvar",
  "solana-sysvar-id",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+]
+
+[[package]]
+name = "solana-program-runtime"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "base64 0.22.1",
+ "bincode",
+ "itertools 0.12.1",
+ "log",
+ "percentage",
+ "rand 0.8.5",
+ "serde",
+ "solana-account",
+ "solana-clock",
+ "solana-epoch-rewards",
+ "solana-epoch-schedule",
+ "solana-fee-structure",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-last-restart-slot",
+ "solana-program-entrypoint",
+ "solana-pubkey 3.0.0",
+ "solana-rent",
+ "solana-sbpf",
+ "solana-sdk-ids",
+ "solana-slot-hashes",
+ "solana-stake-interface",
+ "solana-svm-callback 3.0.14",
+ "solana-svm-feature-set 3.0.14",
+ "solana-svm-log-collector 3.0.14",
+ "solana-svm-measure 3.0.14",
+ "solana-svm-timings 3.0.14",
+ "solana-svm-transaction 3.0.14",
+ "solana-svm-type-overrides 3.0.14",
+ "solana-system-interface",
+ "solana-sysvar",
+ "solana-sysvar-id",
+ "solana-transaction-context 3.0.14",
 ]
 
 [[package]]
@@ -6640,6 +7346,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-rayon-threadlimit"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "log",
+ "num_cpus",
+]
+
+[[package]]
 name = "solana-rent"
 version = "3.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6668,10 +7383,10 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "060be235e0e60133625934061e129b6b2ec1bccbfec8f8680b4fb632d902624d"
 dependencies = [
- "agave-feature-set",
- "agave-precompiles",
- "agave-reserved-account-keys",
- "agave-syscalls",
+ "agave-feature-set 3.0.13",
+ "agave-precompiles 3.0.13",
+ "agave-reserved-account-keys 3.0.13",
+ "agave-syscalls 3.0.13",
  "ahash 0.8.12",
  "aquamarine",
  "arc-swap",
@@ -6709,26 +7424,26 @@ dependencies = [
  "serde_with",
  "solana-account",
  "solana-account-info",
- "solana-accounts-db",
+ "solana-accounts-db 3.0.13",
  "solana-address-lookup-table-interface",
- "solana-bpf-loader-program",
- "solana-bucket-map",
- "solana-builtins",
+ "solana-bpf-loader-program 3.0.13",
+ "solana-bucket-map 3.0.13",
+ "solana-builtins 3.0.13",
  "solana-client-traits",
  "solana-clock",
  "solana-cluster-type",
  "solana-commitment-config",
- "solana-compute-budget",
- "solana-compute-budget-instruction",
+ "solana-compute-budget 3.0.13",
+ "solana-compute-budget-instruction 3.0.13",
  "solana-compute-budget-interface",
- "solana-cost-model",
+ "solana-cost-model 3.0.13",
  "solana-cpi",
  "solana-ed25519-program",
  "solana-epoch-info",
  "solana-epoch-rewards-hasher",
  "solana-epoch-schedule",
  "solana-feature-gate-interface",
- "solana-fee",
+ "solana-fee 3.0.13",
  "solana-fee-calculator",
  "solana-fee-structure",
  "solana-genesis-config",
@@ -6737,26 +7452,26 @@ dependencies = [
  "solana-inflation",
  "solana-instruction",
  "solana-keypair",
- "solana-lattice-hash",
+ "solana-lattice-hash 3.0.13",
  "solana-loader-v3-interface",
  "solana-loader-v4-interface",
- "solana-measure",
+ "solana-measure 3.0.13",
  "solana-message",
- "solana-metrics",
+ "solana-metrics 3.0.13",
  "solana-native-token",
  "solana-nohash-hasher",
  "solana-nonce",
  "solana-nonce-account",
  "solana-packet",
- "solana-perf",
+ "solana-perf 3.0.13",
  "solana-poh-config",
  "solana-precompile-error",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
- "solana-rayon-threadlimit",
+ "solana-rayon-threadlimit 3.0.13",
  "solana-rent",
  "solana-reward-info",
- "solana-runtime-transaction",
+ "solana-runtime-transaction 3.0.13",
  "solana-sdk-ids",
  "solana-secp256k1-program",
  "solana-seed-derivable",
@@ -6767,25 +7482,159 @@ dependencies = [
  "solana-slot-hashes",
  "solana-slot-history",
  "solana-stake-interface",
- "solana-stake-program",
- "solana-svm",
- "solana-svm-callback",
- "solana-svm-timings",
- "solana-svm-transaction",
+ "solana-stake-program 3.0.13",
+ "solana-svm 3.0.13",
+ "solana-svm-callback 3.0.13",
+ "solana-svm-timings 3.0.13",
+ "solana-svm-transaction 3.0.13",
  "solana-system-interface",
  "solana-system-transaction",
  "solana-sysvar",
  "solana-sysvar-id",
  "solana-time-utils",
  "solana-transaction",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
  "solana-transaction-error",
- "solana-transaction-status-client-types",
- "solana-unified-scheduler-logic",
- "solana-version",
- "solana-vote",
+ "solana-transaction-status-client-types 3.0.13",
+ "solana-unified-scheduler-logic 3.0.13",
+ "solana-version 3.0.13",
+ "solana-vote 3.0.13",
  "solana-vote-interface",
- "solana-vote-program",
+ "solana-vote-program 3.0.13",
+ "spl-generic-token",
+ "static_assertions",
+ "strum",
+ "strum_macros",
+ "symlink",
+ "tar",
+ "tempfile",
+ "thiserror 2.0.17",
+ "zstd",
+]
+
+[[package]]
+name = "solana-runtime"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "agave-precompiles 3.0.14",
+ "agave-reserved-account-keys 3.0.14",
+ "agave-syscalls 3.0.14",
+ "ahash 0.8.12",
+ "aquamarine",
+ "arc-swap",
+ "arrayref",
+ "assert_matches",
+ "base64 0.22.1",
+ "bincode",
+ "blake3",
+ "bv",
+ "bytemuck",
+ "crossbeam-channel",
+ "dashmap",
+ "dir-diff",
+ "fnv",
+ "im",
+ "itertools 0.12.1",
+ "libc",
+ "log",
+ "lz4",
+ "memmap2 0.9.9",
+ "mockall",
+ "modular-bitfield",
+ "num-derive",
+ "num-traits",
+ "num_cpus",
+ "num_enum",
+ "percentage",
+ "qualifier_attr",
+ "rand 0.8.5",
+ "rayon",
+ "regex",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "serde_with",
+ "solana-account",
+ "solana-account-info",
+ "solana-accounts-db 3.0.14",
+ "solana-address-lookup-table-interface",
+ "solana-bpf-loader-program 3.0.14",
+ "solana-bucket-map 3.0.14",
+ "solana-builtins 3.0.14",
+ "solana-client-traits",
+ "solana-clock",
+ "solana-cluster-type",
+ "solana-commitment-config",
+ "solana-compute-budget 3.0.14",
+ "solana-compute-budget-instruction 3.0.14",
+ "solana-compute-budget-interface",
+ "solana-cost-model 3.0.14",
+ "solana-cpi",
+ "solana-ed25519-program",
+ "solana-epoch-info",
+ "solana-epoch-rewards-hasher",
+ "solana-epoch-schedule",
+ "solana-feature-gate-interface",
+ "solana-fee 3.0.14",
+ "solana-fee-calculator",
+ "solana-fee-structure",
+ "solana-genesis-config",
+ "solana-hard-forks",
+ "solana-hash 3.1.0",
+ "solana-inflation",
+ "solana-instruction",
+ "solana-keypair",
+ "solana-lattice-hash 3.0.14",
+ "solana-loader-v3-interface",
+ "solana-loader-v4-interface",
+ "solana-measure 3.0.14",
+ "solana-message",
+ "solana-metrics 3.0.14",
+ "solana-native-token",
+ "solana-nohash-hasher",
+ "solana-nonce",
+ "solana-nonce-account",
+ "solana-packet",
+ "solana-perf 3.0.14",
+ "solana-poh-config",
+ "solana-precompile-error",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-rayon-threadlimit 3.0.14",
+ "solana-rent",
+ "solana-reward-info",
+ "solana-runtime-transaction 3.0.14",
+ "solana-sdk-ids",
+ "solana-secp256k1-program",
+ "solana-seed-derivable",
+ "solana-serde",
+ "solana-sha256-hasher",
+ "solana-signature",
+ "solana-signer",
+ "solana-slot-hashes",
+ "solana-slot-history",
+ "solana-stake-interface",
+ "solana-stake-program 3.0.14",
+ "solana-svm 3.0.14",
+ "solana-svm-callback 3.0.14",
+ "solana-svm-timings 3.0.14",
+ "solana-svm-transaction 3.0.14",
+ "solana-system-interface",
+ "solana-system-transaction",
+ "solana-sysvar",
+ "solana-sysvar-id",
+ "solana-time-utils",
+ "solana-transaction",
+ "solana-transaction-context 3.0.14",
+ "solana-transaction-error",
+ "solana-transaction-status-client-types 3.0.14",
+ "solana-unified-scheduler-logic 3.0.14",
+ "solana-version 3.0.14",
+ "solana-vote 3.0.14",
+ "solana-vote-interface",
+ "solana-vote-program 3.0.14",
  "spl-generic-token",
  "static_assertions",
  "strum",
@@ -6803,16 +7652,36 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d3567ab2e703afd97a4f2ac58e6c2d6f0c9fb56aecd360d6e75194eac86d2bb"
 dependencies = [
- "agave-transaction-view",
+ "agave-transaction-view 3.0.13",
  "log",
- "solana-compute-budget",
- "solana-compute-budget-instruction",
+ "solana-compute-budget 3.0.13",
+ "solana-compute-budget-instruction 3.0.13",
  "solana-hash 3.1.0",
  "solana-message",
  "solana-pubkey 3.0.0",
  "solana-sdk-ids",
  "solana-signature",
- "solana-svm-transaction",
+ "solana-svm-transaction 3.0.13",
+ "solana-transaction",
+ "solana-transaction-error",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-runtime-transaction"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-transaction-view 3.0.14",
+ "log",
+ "solana-compute-budget 3.0.14",
+ "solana-compute-budget-instruction 3.0.14",
+ "solana-hash 3.1.0",
+ "solana-message",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-signature",
+ "solana-svm-transaction 3.0.14",
  "solana-transaction",
  "solana-transaction-error",
  "thiserror 2.0.17",
@@ -7065,7 +7934,7 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fb76cf465498438ac3a502e8d116c3b05936f2f9dcb68d2e05201459bba049d0"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "bincode",
  "log",
  "solana-account",
@@ -7076,15 +7945,43 @@ dependencies = [
  "solana-instruction",
  "solana-native-token",
  "solana-packet",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-rent",
  "solana-sdk-ids",
  "solana-stake-interface",
- "solana-svm-log-collector",
- "solana-svm-type-overrides",
+ "solana-svm-log-collector 3.0.13",
+ "solana-svm-type-overrides 3.0.13",
  "solana-sysvar",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+ "solana-vote-interface",
+]
+
+[[package]]
+name = "solana-stake-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "bincode",
+ "log",
+ "solana-account",
+ "solana-bincode",
+ "solana-clock",
+ "solana-config-interface",
+ "solana-genesis-config",
+ "solana-instruction",
+ "solana-native-token",
+ "solana-packet",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-rent",
+ "solana-sdk-ids",
+ "solana-stake-interface",
+ "solana-svm-log-collector 3.0.14",
+ "solana-svm-type-overrides 3.0.14",
+ "solana-sysvar",
+ "solana-transaction-context 3.0.14",
  "solana-vote-interface",
 ]
 
@@ -7094,7 +7991,7 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "70ad66656cad5d90c04a7e61a6634f02adb9c57566a6a74129c6a706ced30743"
 dependencies = [
- "agave-reserved-account-keys",
+ "agave-reserved-account-keys 3.0.13",
  "backoff",
  "bincode",
  "bytes",
@@ -7115,15 +8012,56 @@ dependencies = [
  "smpl_jwt",
  "solana-clock",
  "solana-message",
- "solana-metrics",
+ "solana-metrics 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-serde",
  "solana-signature",
- "solana-storage-proto",
+ "solana-storage-proto 3.0.13",
  "solana-time-utils",
  "solana-transaction",
  "solana-transaction-error",
- "solana-transaction-status",
+ "solana-transaction-status 3.0.13",
+ "thiserror 2.0.17",
+ "tokio",
+ "tonic",
+ "zstd",
+]
+
+[[package]]
+name = "solana-storage-bigtable"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-reserved-account-keys 3.0.14",
+ "backoff",
+ "bincode",
+ "bytes",
+ "bzip2",
+ "enum-iterator",
+ "flate2",
+ "futures",
+ "goauth",
+ "http 0.2.12",
+ "hyper 0.14.32",
+ "hyper-proxy",
+ "log",
+ "openssl",
+ "prost",
+ "prost-types",
+ "serde",
+ "serde_derive",
+ "smpl_jwt",
+ "solana-clock",
+ "solana-message",
+ "solana-metrics 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-serde",
+ "solana-signature",
+ "solana-storage-proto 3.0.14",
+ "solana-time-utils",
+ "solana-transaction",
+ "solana-transaction-error",
+ "solana-transaction-status 3.0.14",
  "thiserror 2.0.17",
  "tokio",
  "tonic",
@@ -7141,7 +8079,7 @@ dependencies = [
  "prost",
  "protobuf-src",
  "serde",
- "solana-account-decoder",
+ "solana-account-decoder 3.0.13",
  "solana-hash 3.1.0",
  "solana-instruction",
  "solana-message",
@@ -7149,9 +8087,33 @@ dependencies = [
  "solana-serde",
  "solana-signature",
  "solana-transaction",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
  "solana-transaction-error",
- "solana-transaction-status",
+ "solana-transaction-status 3.0.13",
+ "tonic-build",
+]
+
+[[package]]
+name = "solana-storage-proto"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "bincode",
+ "bs58",
+ "prost",
+ "protobuf-src",
+ "serde",
+ "solana-account-decoder 3.0.14",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-message",
+ "solana-pubkey 3.0.0",
+ "solana-serde",
+ "solana-signature",
+ "solana-transaction",
+ "solana-transaction-context 3.0.14",
+ "solana-transaction-error",
+ "solana-transaction-status 3.0.14",
  "tonic-build",
 ]
 
@@ -7185,19 +8147,67 @@ dependencies = [
  "smallvec",
  "socket2 0.6.1",
  "solana-keypair",
- "solana-measure",
- "solana-metrics",
- "solana-net-utils",
+ "solana-measure 3.0.13",
+ "solana-metrics 3.0.13",
+ "solana-net-utils 3.0.13",
  "solana-packet",
- "solana-perf",
+ "solana-perf 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-quic-definitions",
  "solana-signature",
  "solana-signer",
  "solana-time-utils",
- "solana-tls-utils",
+ "solana-tls-utils 3.0.13",
  "solana-transaction-error",
- "solana-transaction-metrics-tracker",
+ "solana-transaction-metrics-tracker 3.0.13",
+ "thiserror 2.0.17",
+ "tokio",
+ "tokio-util",
+ "x509-parser 0.14.0",
+]
+
+[[package]]
+name = "solana-streamer"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "arc-swap",
+ "async-channel",
+ "bytes",
+ "crossbeam-channel",
+ "dashmap",
+ "futures",
+ "futures-util",
+ "governor",
+ "histogram",
+ "indexmap 2.11.4",
+ "itertools 0.12.1",
+ "libc",
+ "log",
+ "nix",
+ "num_cpus",
+ "pem 1.1.1",
+ "percentage",
+ "quinn",
+ "quinn-proto",
+ "rand 0.8.5",
+ "rustls 0.23.35",
+ "smallvec",
+ "socket2 0.6.1",
+ "solana-keypair",
+ "solana-measure 3.0.14",
+ "solana-metrics 3.0.14",
+ "solana-net-utils 3.0.14",
+ "solana-packet",
+ "solana-perf 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-quic-definitions",
+ "solana-signature",
+ "solana-signer",
+ "solana-time-utils",
+ "solana-tls-utils 3.0.14",
+ "solana-transaction-error",
+ "solana-transaction-metrics-tracker 3.0.14",
  "thiserror 2.0.17",
  "tokio",
  "tokio-util",
@@ -7223,26 +8233,69 @@ dependencies = [
  "solana-instructions-sysvar",
  "solana-loader-v3-interface",
  "solana-loader-v4-interface",
- "solana-loader-v4-program",
+ "solana-loader-v4-program 3.0.13",
  "solana-message",
  "solana-nonce",
  "solana-nonce-account",
  "solana-program-entrypoint",
  "solana-program-pack",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-rent",
  "solana-sdk-ids",
- "solana-svm-callback",
- "solana-svm-feature-set",
- "solana-svm-log-collector",
- "solana-svm-measure",
- "solana-svm-timings",
- "solana-svm-transaction",
- "solana-svm-type-overrides",
+ "solana-svm-callback 3.0.13",
+ "solana-svm-feature-set 3.0.13",
+ "solana-svm-log-collector 3.0.13",
+ "solana-svm-measure 3.0.13",
+ "solana-svm-timings 3.0.13",
+ "solana-svm-transaction 3.0.13",
+ "solana-svm-type-overrides 3.0.13",
  "solana-system-interface",
  "solana-sysvar-id",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+ "solana-transaction-error",
+ "spl-generic-token",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-svm"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "ahash 0.8.12",
+ "log",
+ "percentage",
+ "serde",
+ "serde_derive",
+ "solana-account",
+ "solana-clock",
+ "solana-fee-structure",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-instructions-sysvar",
+ "solana-loader-v3-interface",
+ "solana-loader-v4-interface",
+ "solana-loader-v4-program 3.0.14",
+ "solana-message",
+ "solana-nonce",
+ "solana-nonce-account",
+ "solana-program-entrypoint",
+ "solana-program-pack",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-rent",
+ "solana-sdk-ids",
+ "solana-svm-callback 3.0.14",
+ "solana-svm-feature-set 3.0.14",
+ "solana-svm-log-collector 3.0.14",
+ "solana-svm-measure 3.0.14",
+ "solana-svm-timings 3.0.14",
+ "solana-svm-transaction 3.0.14",
+ "solana-svm-type-overrides 3.0.14",
+ "solana-system-interface",
+ "solana-sysvar-id",
+ "solana-transaction-context 3.0.14",
  "solana-transaction-error",
  "spl-generic-token",
  "thiserror 2.0.17",
@@ -7261,10 +8314,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-svm-callback"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "solana-account",
+ "solana-clock",
+ "solana-precompile-error",
+ "solana-pubkey 3.0.0",
+]
+
+[[package]]
 name = "solana-svm-feature-set"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "47ca6fce635687e1f1d1f7a72feb48b6fa42a905f8a785441064969d24ec193f"
+
+[[package]]
+name = "solana-svm-feature-set"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
 
 [[package]]
 name = "solana-svm-log-collector"
@@ -7276,16 +8345,39 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-svm-log-collector"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "log",
+]
+
+[[package]]
 name = "solana-svm-measure"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "52aea0c4cf84507749422394901080a14f5c176f16bae5ae2e77be53f0a7e418"
 
 [[package]]
+name = "solana-svm-measure"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+
+[[package]]
 name = "solana-svm-timings"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "48307758614f0c91a23b71e422ad480e1eac7750fdf5c0115b17eada2dca184d"
+dependencies = [
+ "eager",
+ "enum-iterator",
+ "solana-pubkey 3.0.0",
+]
+
+[[package]]
+name = "solana-svm-timings"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
 dependencies = [
  "eager",
  "enum-iterator",
@@ -7307,10 +8399,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-svm-transaction"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "solana-hash 3.1.0",
+ "solana-message",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-signature",
+ "solana-transaction",
+]
+
+[[package]]
 name = "solana-svm-type-overrides"
 version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6f189e9d86bbb0315d5c705d73da30359e2df88b7f30c812fe55b0ce55f7b4e9"
+dependencies = [
+ "rand 0.8.5",
+]
+
+[[package]]
+name = "solana-svm-type-overrides"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
 dependencies = [
  "rand 0.8.5",
 ]
@@ -7347,14 +8460,40 @@ dependencies = [
  "solana-nonce",
  "solana-nonce-account",
  "solana-packet",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-sdk-ids",
- "solana-svm-log-collector",
- "solana-svm-type-overrides",
+ "solana-svm-log-collector 3.0.13",
+ "solana-svm-type-overrides 3.0.13",
  "solana-system-interface",
  "solana-sysvar",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+]
+
+[[package]]
+name = "solana-system-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "bincode",
+ "log",
+ "serde",
+ "serde_derive",
+ "solana-account",
+ "solana-bincode",
+ "solana-fee-calculator",
+ "solana-instruction",
+ "solana-nonce",
+ "solana-nonce-account",
+ "solana-packet",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-svm-log-collector 3.0.14",
+ "solana-svm-type-overrides 3.0.14",
+ "solana-system-interface",
+ "solana-sysvar",
+ "solana-transaction-context 3.0.14",
 ]
 
 [[package]]
@@ -7434,6 +8573,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-tls-utils"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "rustls 0.23.35",
+ "solana-keypair",
+ "solana-pubkey 3.0.0",
+ "solana-signer",
+ "x509-parser 0.14.0",
+]
+
+[[package]]
 name = "solana-transaction"
 version = "3.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7474,6 +8625,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "solana-transaction-context"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "bincode",
+ "serde",
+ "serde_derive",
+ "solana-account",
+ "solana-instruction",
+ "solana-instructions-sysvar",
+ "solana-pubkey 3.0.0",
+ "solana-rent",
+ "solana-sbpf",
+ "solana-sdk-ids",
+]
+
+[[package]]
 name = "solana-transaction-error"
 version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7496,7 +8664,22 @@ dependencies = [
  "log",
  "rand 0.8.5",
  "solana-packet",
- "solana-perf",
+ "solana-perf 3.0.13",
+ "solana-short-vec",
+ "solana-signature",
+]
+
+[[package]]
+name = "solana-transaction-metrics-tracker"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "base64 0.22.1",
+ "bincode",
+ "log",
+ "rand 0.8.5",
+ "solana-packet",
+ "solana-perf 3.0.14",
  "solana-short-vec",
  "solana-signature",
 ]
@@ -7508,7 +8691,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "816874a1f52531d722be973790f3cfbf550d2c235261cf9cbb2ee4ad1a79c932"
 dependencies = [
  "Inflector",
- "agave-reserved-account-keys",
+ "agave-reserved-account-keys 3.0.13",
  "base64 0.22.1",
  "bincode",
  "borsh",
@@ -7517,7 +8700,7 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
- "solana-account-decoder",
+ "solana-account-decoder 3.0.13",
  "solana-address-lookup-table-interface",
  "solana-clock",
  "solana-hash 3.1.0",
@@ -7534,7 +8717,50 @@ dependencies = [
  "solana-system-interface",
  "solana-transaction",
  "solana-transaction-error",
- "solana-transaction-status-client-types",
+ "solana-transaction-status-client-types 3.0.13",
+ "solana-vote-interface",
+ "spl-associated-token-account-interface",
+ "spl-memo-interface",
+ "spl-token-2022-interface",
+ "spl-token-group-interface",
+ "spl-token-interface",
+ "spl-token-metadata-interface",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-transaction-status"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "Inflector",
+ "agave-reserved-account-keys 3.0.14",
+ "base64 0.22.1",
+ "bincode",
+ "borsh",
+ "bs58",
+ "log",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "solana-account-decoder 3.0.14",
+ "solana-address-lookup-table-interface",
+ "solana-clock",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-loader-v2-interface",
+ "solana-loader-v3-interface",
+ "solana-message",
+ "solana-program-option",
+ "solana-pubkey 3.0.0",
+ "solana-reward-info",
+ "solana-sdk-ids",
+ "solana-signature",
+ "solana-stake-interface",
+ "solana-system-interface",
+ "solana-transaction",
+ "solana-transaction-error",
+ "solana-transaction-status-client-types 3.0.14",
  "solana-vote-interface",
  "spl-associated-token-account-interface",
  "spl-memo-interface",
@@ -7557,7 +8783,7 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
- "solana-account-decoder-client-types",
+ "solana-account-decoder-client-types 3.0.13",
  "solana-commitment-config",
  "solana-instruction",
  "solana-message",
@@ -7565,7 +8791,31 @@ dependencies = [
  "solana-reward-info",
  "solana-signature",
  "solana-transaction",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+ "solana-transaction-error",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-transaction-status-client-types"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "base64 0.22.1",
+ "bincode",
+ "bs58",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "solana-account-decoder-client-types 3.0.14",
+ "solana-commitment-config",
+ "solana-instruction",
+ "solana-message",
+ "solana-pubkey 3.0.0",
+ "solana-reward-info",
+ "solana-signature",
+ "solana-transaction",
+ "solana-transaction-context 3.0.14",
  "solana-transaction-error",
  "thiserror 2.0.17",
 ]
@@ -7578,7 +8828,20 @@ checksum = "3b82f0ac9fd7184ee3f9b2c9fa602be0005fbbe4b6c159ddffe7008d08e7ce5d"
 dependencies = [
  "assert_matches",
  "solana-pubkey 3.0.0",
- "solana-runtime-transaction",
+ "solana-runtime-transaction 3.0.13",
+ "solana-transaction",
+ "static_assertions",
+ "unwrap_none",
+]
+
+[[package]]
+name = "solana-unified-scheduler-logic"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "assert_matches",
+ "solana-pubkey 3.0.0",
+ "solana-runtime-transaction 3.0.14",
  "solana-transaction",
  "static_assertions",
  "unwrap_none",
@@ -7590,7 +8853,21 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "03ee111a79009297ce50a7485500269f133c0d422163fa8f80967b48eadb8f0e"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
+ "rand 0.8.5",
+ "semver",
+ "serde",
+ "serde_derive",
+ "solana-sanitize",
+ "solana-serde-varint",
+]
+
+[[package]]
+name = "solana-version"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
  "rand 0.8.5",
  "semver",
  "serde",
@@ -7621,7 +8898,34 @@ dependencies = [
  "solana-serialize-utils",
  "solana-signature",
  "solana-signer",
- "solana-svm-transaction",
+ "solana-svm-transaction 3.0.13",
+ "solana-transaction",
+ "solana-vote-interface",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-vote"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "itertools 0.12.1",
+ "log",
+ "serde",
+ "serde_derive",
+ "solana-account",
+ "solana-bincode",
+ "solana-clock",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-keypair",
+ "solana-packet",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-serialize-utils",
+ "solana-signature",
+ "solana-signer",
+ "solana-svm-transaction 3.0.14",
  "solana-transaction",
  "solana-vote-interface",
  "thiserror 2.0.17",
@@ -7659,7 +8963,7 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a0d1a6ae89d1e89750d23eec2cdc20f4d763b9fc63c76b06d8c22ccf33501749"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "bincode",
  "log",
  "num-derive",
@@ -7674,14 +8978,46 @@ dependencies = [
  "solana-instruction",
  "solana-keypair",
  "solana-packet",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-pubkey 3.0.0",
  "solana-rent",
  "solana-sdk-ids",
  "solana-signer",
  "solana-slot-hashes",
  "solana-transaction",
- "solana-transaction-context",
+ "solana-transaction-context 3.0.13",
+ "solana-vote-interface",
+ "thiserror 2.0.17",
+]
+
+[[package]]
+name = "solana-vote-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "bincode",
+ "log",
+ "num-derive",
+ "num-traits",
+ "serde",
+ "serde_derive",
+ "solana-account",
+ "solana-bincode",
+ "solana-clock",
+ "solana-epoch-schedule",
+ "solana-hash 3.1.0",
+ "solana-instruction",
+ "solana-keypair",
+ "solana-packet",
+ "solana-program-runtime 3.0.14",
+ "solana-pubkey 3.0.0",
+ "solana-rent",
+ "solana-sdk-ids",
+ "solana-signer",
+ "solana-slot-hashes",
+ "solana-transaction",
+ "solana-transaction-context 3.0.14",
  "solana-vote-interface",
  "thiserror 2.0.17",
 ]
@@ -7692,14 +9028,30 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c315c2da31d23afafbe0c832ea650f0cd7b78d39e25eade160d97cdd9a9e65d3"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "bytemuck",
  "num-derive",
  "num-traits",
  "solana-instruction",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-sdk-ids",
- "solana-svm-log-collector",
+ "solana-svm-log-collector 3.0.13",
+ "solana-zk-sdk",
+]
+
+[[package]]
+name = "solana-zk-elgamal-proof-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "bytemuck",
+ "num-derive",
+ "num-traits",
+ "solana-instruction",
+ "solana-program-runtime 3.0.14",
+ "solana-sdk-ids",
+ "solana-svm-log-collector 3.0.14",
  "solana-zk-sdk",
 ]
 
@@ -7746,15 +9098,31 @@ version = "3.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94d1a068e5ee02874ae818a2454675c818b576694cb52804acf9e222ceb075de"
 dependencies = [
- "agave-feature-set",
+ "agave-feature-set 3.0.13",
  "bytemuck",
  "num-derive",
  "num-traits",
  "solana-instruction",
- "solana-program-runtime",
+ "solana-program-runtime 3.0.13",
  "solana-sdk-ids",
- "solana-svm-log-collector",
- "solana-zk-token-sdk",
+ "solana-svm-log-collector 3.0.13",
+ "solana-zk-token-sdk 3.0.13",
+]
+
+[[package]]
+name = "solana-zk-token-proof-program"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "agave-feature-set 3.0.14",
+ "bytemuck",
+ "num-derive",
+ "num-traits",
+ "solana-instruction",
+ "solana-program-runtime 3.0.14",
+ "solana-sdk-ids",
+ "solana-svm-log-collector 3.0.14",
+ "solana-zk-token-sdk 3.0.14",
 ]
 
 [[package]]
@@ -7778,7 +9146,41 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "sha3",
- "solana-curve25519",
+ "solana-curve25519 3.0.13",
+ "solana-derivation-path",
+ "solana-instruction",
+ "solana-pubkey 3.0.0",
+ "solana-sdk-ids",
+ "solana-seed-derivable",
+ "solana-seed-phrase",
+ "solana-signature",
+ "solana-signer",
+ "subtle",
+ "thiserror 2.0.17",
+ "zeroize",
+]
+
+[[package]]
+name = "solana-zk-token-sdk"
+version = "3.0.14"
+source = "git+https://github.com/Overclock-Validator/agave.git?rev=bb110d1fad7f1523c13709dcd1a0336f9f9975b4#bb110d1fad7f1523c13709dcd1a0336f9f9975b4"
+dependencies = [
+ "aes-gcm-siv",
+ "base64 0.22.1",
+ "bincode",
+ "bytemuck",
+ "bytemuck_derive",
+ "curve25519-dalek 4.1.3",
+ "itertools 0.12.1",
+ "merlin",
+ "num-derive",
+ "num-traits",
+ "rand 0.8.5",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "sha3",
+ "solana-curve25519 3.0.14",
  "solana-derivation-path",
  "solana-instruction",
  "solana-pubkey 3.0.0",
@@ -7977,7 +9379,7 @@ checksum = "879a9ebad0d77383d3ea71e7de50503554961ff0f4ef6cbca39ad126e6f6da3a"
 dependencies = [
  "bytemuck",
  "solana-account-info",
- "solana-curve25519",
+ "solana-curve25519 3.0.13",
  "solana-instruction",
  "solana-instructions-sysvar",
  "solana-msg",
