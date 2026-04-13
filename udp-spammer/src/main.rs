@@ -26,7 +26,6 @@ async fn main() -> anyhow::Result<()> {
 
     let socket = Arc::new(UdpSocket::bind("0.0.0.0:0").await?);
 
-    let packet = [0u8; 1232];
     let total_packets = args.pps * SPAM_DURATION_SECS;
     let batch_cnt = total_packets
         .checked_div(PACKET_BATCH_SIZE)
@@ -41,6 +40,8 @@ async fn main() -> anyhow::Result<()> {
         ));
     }
 
+    let mut packet_id = 0u32;
+    let mut packet_times = Vec::with_capacity(total_packets as usize);
     for i in 0..batch_cnt {
         let packet_cnt = PACKET_BATCH_SIZE + if i == batch_cnt - 1 { remaining } else { 0 };
         let start = SystemTime::now();
@@ -49,11 +50,17 @@ async fn main() -> anyhow::Result<()> {
         for _ in 0..packet_cnt {
             let socket = socket.clone();
             spawner.spawn(async move {
+                let mut packet = [0u8; 1232];
+                packet[1228..1232].copy_from_slice(&packet_id.to_le_bytes());
                 let _ = socket.send_to(&packet, args.target).await;
+                (packet_id, SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis())
             });
+            packet_id += 1;
         }
 
-        spawner.join_all().await;
+        while let Some(packet_time) = spawner.join_next().await {
+            packet_times.push(packet_time.unwrap());
+        };
         println!(
             "Spawned {} packets at {} EPOCH MS",
             args.pps,
@@ -67,6 +74,9 @@ async fn main() -> anyhow::Result<()> {
         if let Some(sleep_dur) = batch_time.checked_sub(elapsed) {
             tokio::time::sleep(sleep_dur).await;
         }
+    }
+    for (packet_id, packet_time) in packet_times {
+        println!("packet_id: {packet_id}, timestamp: {packet_time}");
     }
 
     Ok(())

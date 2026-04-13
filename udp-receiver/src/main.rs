@@ -26,40 +26,45 @@ async fn main() -> Result<()> {
     let mut last_packet_time: Duration;
     let timeout_duration = Duration::from_secs(10);
 
-    let expected_packet = [0u8; 1232];
+    let expected_packet_mask = [0u8; 1228];
+    let mut packet_times = Vec::with_capacity(1000);
 
     loop {
         let (len, peer) = socket.recv_from(&mut buf).await?;
 
-        if len == 1232 && buf == expected_packet {
+        if len == 1232 && buf[..1228] == expected_packet_mask {
             packet_count += 1;
             last_packet_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH)?;
             println!(
                 "First packet received from {peer}, at {} EPOCH_MS",
                 last_packet_time.as_millis()
             );
+            let packet_id = u32::from_le_bytes(buf[1228..1232].try_into().unwrap());
+            packet_times.push((packet_id, last_packet_time.as_millis()));
             break;
         } else {
-            println!(
-                "Ignoring invalid packet from {} ({} bytes, expected 1232 null bytes)",
-                peer, len
-            );
+            // println!(
+            //     "Ignoring invalid packet from {} ({} bytes, expected 1228 null bytes)",
+            //     peer, len
+            // );
         }
     }
 
     loop {
         match timeout(timeout_duration, socket.recv_from(&mut buf)).await {
-            Ok(Ok((len, peer))) => {
+            Ok(Ok((len, _))) => {
                 // Validate packet: must be exactly 1232 bytes of null bytes
-                if len == 1232 && buf[..len].iter().all(|&b| b == 0) {
+                if len == 1232 && buf[..1228].iter().all(|&b| b == 0) {
                     packet_count += 1;
                     last_packet_time = SystemTime::now().duration_since(UNIX_EPOCH)?;
-                } else {
+                    let packet_id = u32::from_le_bytes(buf[1228..1232].try_into().unwrap());
+                    packet_times.push((packet_id, last_packet_time.as_millis()));
+                } /*else {
                     println!(
                         "Ignoring invalid packet from {} ({} bytes, expected 1232 null bytes)",
                         peer, len
                     );
-                }
+                }*/
             }
             Ok(Err(e)) => {
                 eprintln!("Error receiving packet: {}", e);
@@ -78,6 +83,9 @@ async fn main() -> Result<()> {
         last_packet_time.as_millis()
     );
     println!("Total packets received: {}", packet_count);
+    for (packet_id, packet_time) in packet_times {
+        println!("packet_id: {packet_id}, timestamp: {packet_time}")
+    }
 
     Ok(())
 }
