@@ -1,5 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
+use tokio::{select, signal};
 use std::net::SocketAddr;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use tokio::net::UdpSocket;
@@ -50,30 +51,38 @@ async fn main() -> Result<()> {
         }
     }
 
+    let mut ctrl_c_handle = tokio::spawn(signal::ctrl_c());
     loop {
-        match timeout(timeout_duration, socket.recv_from(&mut buf)).await {
-            Ok(Ok((len, _))) => {
-                // Validate packet: must be exactly 1232 bytes of null bytes
-                if len == 1232 && buf[..1228].iter().all(|&b| b == 0) {
-                    packet_count += 1;
-                    last_packet_time = SystemTime::now().duration_since(UNIX_EPOCH)?;
-                    let packet_id = u32::from_le_bytes(buf[1228..1232].try_into().unwrap());
-                    packet_times.push((packet_id, last_packet_time.as_millis()));
-                } /*else {
-                    println!(
-                        "Ignoring invalid packet from {} ({} bytes, expected 1232 null bytes)",
-                        peer, len
-                    );
-                }*/
-            }
-            Ok(Err(e)) => {
-                eprintln!("Error receiving packet: {}", e);
+        select! {
+            _ = &mut ctrl_c_handle => {
                 break;
             }
-            Err(_) => {
-                // Timeout occurred
-                println!("\nNo packets received for 10 seconds. Shutting down...");
-                break;
+            res = timeout(timeout_duration, socket.recv_from(&mut buf)) => {
+                match res {
+                    Ok(Ok((len, _))) => {
+                        // Validate packet: must be exactly 1232 bytes of null bytes
+                        if len == 1232 && buf[..1228].iter().all(|&b| b == 0) {
+                            packet_count += 1;
+                            last_packet_time = SystemTime::now().duration_since(UNIX_EPOCH)?;
+                            let packet_id = u32::from_le_bytes(buf[1228..1232].try_into().unwrap());
+                            packet_times.push((packet_id, last_packet_time.as_millis()));
+                        } /*else {
+                            println!(
+                                "Ignoring invalid packet from {} ({} bytes, expected 1232 null bytes)",
+                                peer, len
+                            );
+                        }*/
+                    }
+                    Ok(Err(e)) => {
+                        eprintln!("Error receiving packet: {}", e);
+                        break;
+                    }
+                    Err(_) => {
+                        // Timeout occurred
+                        println!("\nNo packets received for 10 seconds. Shutting down...");
+                        break;
+                    }
+                }
             }
         }
     }
