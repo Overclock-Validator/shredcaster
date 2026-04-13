@@ -13,12 +13,12 @@ struct UdpSpammerArgs {
     #[arg(short, long)]
     target: SocketAddr,
     /// Packets per second
-    #[arg(short, long, default_value_t = 5000)]
+    #[arg(short, long, default_value_t = 100)]
     pps: u32,
 }
 
 const SPAM_DURATION_SECS: u32 = 10; // 10 seconds
-const PACKET_BATCH_SIZE: u32 = 100; // Number of packets to send in one go
+const PACKET_BATCH_SIZE: u32 = 10; // Number of packets to send in one go
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
